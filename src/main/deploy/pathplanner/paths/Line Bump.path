@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.26,
+        "y": 3.316426056338029
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.6169831059206983,
+        "y": 2.77263739313068
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.5,
+        "y": 2.661725352112676
+      },
+      "prevControl": {
+        "x": 3.391642866382912,
+        "y": 3.4258474639433056
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Bump Test"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 47.244252894263575
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 39.28940686250038
+  },
+  "useDefaultConstraints": true
+}

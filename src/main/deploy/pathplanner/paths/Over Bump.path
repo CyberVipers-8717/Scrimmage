@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.3297887323943667,
+        "x": 2.5,
         "y": 2.661725352112676
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.623221830985916,
-        "y": 2.6297887323943665
+        "x": 3.7562726704314016,
+        "y": 2.658446013940489
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Bump Test"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 2.661725352112676
       },
       "prevControl": {
-        "x": 5.641232394366198,
-        "y": 2.661725352112676
+        "x": 5.69650268505451,
+        "y": 2.6681144208030116
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 45.000000000000036
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 47.244252894263575
   },
   "useDefaultConstraints": true
 }
