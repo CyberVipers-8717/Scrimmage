@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Back up from Hub"
+            "pathName": "Back up left from Hub"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Drive over bump"
+            "pathName": "Drive over left bump"
           }
         }
       ]
