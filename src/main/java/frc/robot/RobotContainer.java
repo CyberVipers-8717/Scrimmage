@@ -11,12 +11,19 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.DriveToTag;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ShootFuel;
+import frc.robot.commands.ShootFuel2;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -40,8 +47,11 @@ public class RobotContainer {
   //private final CommandXboxController m_driverController = new CommandXboxController(0);
   private final XboxController m_driverController = new XboxController(0);
 
+
+  private final SendableChooser<Command> autoChooser;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    NamedCommands.registerCommand("Shoot Fuel", new ShootFuel(m_shoot, 2500).withTimeout(5));
     // Configure the trigger bindings
     configureBindings();
 
@@ -55,6 +65,10 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
   }
 
@@ -76,11 +90,16 @@ public class RobotContainer {
     //m_driverController.b().whileTrue(new ShootFuel(m_shoot, 1100));
 
     //While X button is held, the wheels will be set in an X formation
-    new JoystickButton(m_driverController, Button.kX.value)
+    new JoystickButton(m_driverController, Button.kLeftBumper.value)
       .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
     
+
+     new JoystickButton(m_driverController, Button.kB.value)
+      .whileTrue(new RunCommand(
+            () -> m_robotDrive.zeroHeading(),
+            m_robotDrive));
     /*
     While the Right Bumper is held, the shoot command sequence is executed.
     The shoot command sequence first spins the shooter to the set rpm below,
@@ -88,10 +107,21 @@ public class RobotContainer {
     changed in the specific command to start up the queuer).
   */
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-      .whileTrue(new ShootFuel(m_shoot, 5000));
-    
+      .whileTrue(new ShootFuel2(m_shoot, 2500));
+
+    // new JoystickButton(m_driverController, Button.kLeftBumper.value)
+    //   .whileTrue(new AlignToTagCommand(m_robotDrive, "limelight-front"));
+
     new JoystickButton(m_driverController, Button.kA.value)
-      .whileTrue(new AlignToTagCommand(m_robotDrive, "limelight-front"));
+      .whileTrue(new ShootFuel2(m_shoot, 5000));
+    // new JoystickButton(m_driverController, Button.kB.value)
+    //   .whileTrue(new ShootFuel(m_shoot, 7500));
+    // new JoystickButton(m_driverController, Button.kY.value)
+    //   .whileTrue(new ShootFuel(m_shoot, 9000));
+    // new JoystickButton(m_driverController, Button.kX.value)
+    //   .whileTrue(new ShootFuel(m_shoot, 11000));
+    
+    
     
 
   }
