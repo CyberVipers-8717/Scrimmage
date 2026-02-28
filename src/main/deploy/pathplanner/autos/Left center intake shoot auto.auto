@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "trench Path left"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Fuel"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "intake fuel left side center"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "left side from center intake to shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Fuel"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
