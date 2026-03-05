@@ -25,7 +25,7 @@ public class ShootFuel2 extends Command {
     //Outputs a message to let us know the command has been called and initialized
     @Override
     public void initialize(){
-        launcher.setShooterRPM(speed);
+        launcher.setShooterPower(speed);
         timer.start();
         System.out.println("***Shooter has started!***");
     }
@@ -38,15 +38,15 @@ public class ShootFuel2 extends Command {
         //Could also use:
         //if(timer.get() > 1){}
         if(timer.hasElapsed(1)){
-            launcher.setQueuerRPM(speed);
-            System.out.println("Shooter at target RPM, Queuer activated.");
-            System.out.println("Shooter is running at: " + launcher.getShooterRPM());
-            System.out.println("Queuer is running at: " + launcher.getQueuerRPM());
-            System.out.println("Queuer current (A): " + launcher.getQueuerCurrent());
+            launcher.setQueuerPower(speed);
+            // System.out.println("Shooter at target RPM, Queuer activated.");
+            // System.out.println("Shooter is running at: " + launcher.getShooterRPM());
+            // System.out.println("Queuer is running at: " + launcher.getQueuerRPM());
+            // System.out.println("Queuer current (A): " + launcher.getQueuerCurrent());
         } else {
             launcher.stopQueuer();
-            System.out.println("Waiting for shooter to reach target RPM.");
-            System.out.println("Current RPM: " + launcher.getShooterRPM());
+            // System.out.println("Waiting for shooter to reach target RPM.");
+            // System.out.println("Current RPM: " + launcher.getShooterRPM());
         }
     }
 

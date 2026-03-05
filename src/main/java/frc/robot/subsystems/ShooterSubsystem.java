@@ -63,7 +63,7 @@ public class ShooterSubsystem extends SubsystemBase{
 
         //Set up configurations, starting with idle mode and current limit
         shooterConfig.idleMode(IdleMode.kCoast);
-        shooterConfig.smartCurrentLimit(50);
+        shooterConfig.smartCurrentLimit(60);
         //Now set up closed loop control configus
         shooterConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -73,7 +73,7 @@ public class ShooterSubsystem extends SubsystemBase{
         
         //Do the same for the queuer config
         queuerConfig.idleMode(IdleMode.kCoast);
-        queuerConfig.smartCurrentLimit(50);
+        queuerConfig.smartCurrentLimit(60);
 
         queuerConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -91,17 +91,17 @@ public class ShooterSubsystem extends SubsystemBase{
 
     //Once constructor finished, create helpful methods for simple commands or to return specific values
 
-    //Set Shooter to specific RPM
-    public void setShooterRPM(double rpm){
-        shooterController.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
-    }
-
-    //Method to set the shooter motor speed based on percentage of speed, not rpm
-    //Change number inside .set() to desired percent (range from -1 to 1) and change
-    //setShooterRPM() to setShooterPower() in appropriate commands
-    // public void setShooterPower(double rpm){
-    //     m_shooter.set(1);
+    // //Set Shooter to specific RPM
+    // public void setShooterRPM(double rpm){
+    //     shooterController.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
     // }
+
+    // Method to set the shooter motor speed based on percentage of speed, not rpm
+    // Change number inside .set() to desired percent (range from -1 to 1) and change
+    // setShooterRPM() to setShooterPower() in appropriate commands
+    public void setShooterPower(double rpm){
+        m_shooter.setVoltage(rpm);
+    }
     
     //Return the current RPM of the shooter
     public double getShooterRPM(){
@@ -114,16 +114,16 @@ public class ShooterSubsystem extends SubsystemBase{
     }
 
     //Set queuer to specific RPM
-    public void setQueuerRPM(double rpm){
-        queuerController.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
-    }
+    // public void setQueuerRPM(double rpm){
+    //     queuerController.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
+    // }
 
     //Method to set the queuer motor speed based on percentage of speed, not rpm
     //Change number inside .set() to desired percent (range from -1 to 1) and change
     //setQueuerRPM() to setQueuerPower() in appropriate commands
-    // public void setQueuerPower(double rpm){
-    //     m_queuer.set(1);
-    // }
+    public void setQueuerPower(double rpm){
+        m_queuer.setVoltage(rpm);
+    }
 
     //Return the current RPM of the queuer
     public double getQueuerRPM(){
@@ -149,8 +149,8 @@ public class ShooterSubsystem extends SubsystemBase{
     //Periodic function is predefined and occurs periodically (50 times a second)
     public void periodic(){
         SmartDashboard.putNumber("Shooter RPM: ", getShooterRPM());
-        SmartDashboard.putNumber("Shooter Current (A): ", getShooterCurrent());
         SmartDashboard.putNumber("Queuer RPM: ", getQueuerRPM());
+        SmartDashboard.putNumber("Shooter Current (A): ", getShooterCurrent());
         SmartDashboard.putNumber("Queuer Current (A): ", getQueuerCurrent());
     }    
 

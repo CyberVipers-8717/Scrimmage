@@ -15,7 +15,7 @@ public class SpinUp extends Command {
     }
 
 public void initialize() {
-    Shooting.setShooterRPM(speed);
+    Shooting.setShooterPower(speed);
     System.out.println("Shooter Initialized");
 
 }

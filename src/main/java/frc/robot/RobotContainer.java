@@ -60,9 +60,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightY(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
 
@@ -96,30 +96,31 @@ public class RobotContainer {
             m_robotDrive));
     
 
-     new JoystickButton(m_driverController, Button.kB.value)
-      .whileTrue(new RunCommand(
-            () -> m_robotDrive.zeroHeading(),
-            m_robotDrive));
+    //  new JoystickButton(m_driverController, Button.kX.value)
+    //   .whileTrue(new RunCommand(
+    //         () -> m_robotDrive.zeroHeading(),
+    //         m_robotDrive));
     /*
     While the Right Bumper is held, the shoot command sequence is executed.
     The shoot command sequence first spins the shooter to the set rpm below,
     then starts up the queuer to the same rpm (or to a fraction which can be
     changed in the specific command to start up the queuer).
   */
+  //Shooter voltage from 5.5 to 24
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-      .whileTrue(new ShootFuel2(m_shoot, 2500));
+      .whileTrue(new ShootFuel2(m_shoot, 5.5));
 
     // new JoystickButton(m_driverController, Button.kLeftBumper.value)
     //   .whileTrue(new AlignToTagCommand(m_robotDrive, "limelight-front"));
 
     new JoystickButton(m_driverController, Button.kA.value)
-      .whileTrue(new ShootFuel2(m_shoot, 5000));
-    // new JoystickButton(m_driverController, Button.kB.value)
-    //   .whileTrue(new ShootFuel(m_shoot, 7500));
-    // new JoystickButton(m_driverController, Button.kY.value)
-    //   .whileTrue(new ShootFuel(m_shoot, 9000));
-    // new JoystickButton(m_driverController, Button.kX.value)
-    //   .whileTrue(new ShootFuel(m_shoot, 11000));
+      .whileTrue(new ShootFuel2(m_shoot, 7.5));
+    new JoystickButton(m_driverController, Button.kB.value)
+      .whileTrue(new ShootFuel(m_shoot, 9.5));
+    new JoystickButton(m_driverController, Button.kY.value)
+      .whileTrue(new ShootFuel(m_shoot, 11.5));
+    new JoystickButton(m_driverController, Button.kX.value)
+      .whileTrue(new ShootFuel(m_shoot, 13.5));
     
     
     
