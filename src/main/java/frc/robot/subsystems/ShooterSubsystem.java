@@ -101,6 +101,7 @@ public class ShooterSubsystem extends SubsystemBase{
     // setShooterRPM() to setShooterPower() in appropriate commands
     public void setShooterPower(double rpm){
         m_shooter.setVoltage(rpm);
+        //shooterController.setSetpoint(rpm, SparkMax.ControlType.kVoltage);
     }
     
     //Return the current RPM of the shooter
