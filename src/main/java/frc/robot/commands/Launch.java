@@ -16,7 +16,6 @@ public class Launch extends Command {
     public void initialize() {
         launcher.setQueuerPower(speed);
         launcher.setShooterPower(speed);
-
     }
 
     public void execute() {

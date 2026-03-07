@@ -39,12 +39,14 @@ public class ShootFuel2 extends Command {
         //if(timer.get() > 1){}
         if(timer.hasElapsed(1)){
             launcher.setQueuerPower(speed);
+            launcher.setHopperPower(speed * 0.1); // sets hopper speed slower
             // System.out.println("Shooter at target RPM, Queuer activated.");
             // System.out.println("Shooter is running at: " + launcher.getShooterRPM());
             // System.out.println("Queuer is running at: " + launcher.getQueuerRPM());
             // System.out.println("Queuer current (A): " + launcher.getQueuerCurrent());
         } else {
             launcher.stopQueuer();
+            launcher.stopHopper();
             // System.out.println("Waiting for shooter to reach target RPM.");
             // System.out.println("Current RPM: " + launcher.getShooterRPM());
         }
