@@ -13,19 +13,23 @@ public class Launch extends Command {
         this.speed = speed;
     }
 
+    @Override
     public void initialize() {
         launcher.setQueuerPower(speed);
-        launcher.setShooterPower(speed);
+        launcher.setShooterRPM(speed);
     }
 
+    @Override
     public void execute() {
 
     }
 
-    public void end() {
-
+    @Override
+    public void end(boolean interrupted) {
+        launcher.stop();
     }
 
+    @Override
     public boolean isFinished(){
         return false;
     }

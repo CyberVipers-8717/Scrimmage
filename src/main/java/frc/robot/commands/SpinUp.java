@@ -14,21 +14,25 @@ public class SpinUp extends Command {
         this.speed = speed;
     }
 
+@Override
 public void initialize() {
-    Shooting.setShooterPower(speed);
+    Shooting.setShooterRPM(speed);
     /*New Line*/Shooting.setQueuerPower(0);
     System.out.println("Shooter Initialized");
 
 }
 
+@Override
 public void execute() {
 
 }
 
-public void end() {
+@Override
+public void end(boolean interrupted) {
 
 }
 
+@Override
 public boolean isFinished() {
     return false;
 }

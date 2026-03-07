@@ -25,7 +25,7 @@ public class ShootFuel2 extends Command {
     //Outputs a message to let us know the command has been called and initialized
     @Override
     public void initialize(){
-        launcher.setShooterPower(speed);
+        launcher.setShooterRPM(speed);
         timer.start();
         System.out.println("***Shooter has started!***");
     }

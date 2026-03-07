@@ -58,7 +58,7 @@ public class ShooterSubsystem extends SubsystemBase{
         m_shooter = new SparkMax(10, MotorType.kBrushless);
         m_queuer = new SparkMax(9, MotorType.kBrushless);
         //Change device ID when hopper is finished
-        m_hopper = new SparkMax(0, MotorType.kBrushless);
+        m_hopper = new SparkMax(14, MotorType.kBrushless);
 
         //Initialize encoders
         shooterEncoder = m_shooter.getEncoder();
@@ -119,17 +119,17 @@ public class ShooterSubsystem extends SubsystemBase{
     //Once constructor finished, create helpful methods for simple commands or to return specific values
 
     // //Set Shooter to specific RPM
-    // public void setShooterRPM(double rpm){
-    //     shooterController.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
-    // }
+    public void setShooterRPM(double rpm){
+        shooterController.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
+    }
 
     // Method to set the shooter motor speed based on percentage of speed, not rpm
     // Change number inside .set() to desired percent (range from -1 to 1) and change
     // setShooterRPM() to setShooterPower() in appropriate commands
-    public void setShooterPower(double rpm){
-        m_shooter.setVoltage(rpm);
-        //shooterController.setSetpoint(rpm, SparkMax.ControlType.kVoltage);
-    }
+    // public void setShooterPower(double rpm){
+    //     m_shooter.setVoltage(rpm);
+    //     //shooterController.setSetpoint(rpm, SparkMax.ControlType.kVoltage);
+    // }
     
     //Return the current RPM of the shooter
     public double getShooterRPM(){
@@ -171,8 +171,8 @@ public class ShooterSubsystem extends SubsystemBase{
     //Method to set the Hopper motor speed based on percentage of speed, not rpm
     //Change number inside .set() to desired percent (range from -1 to 1) and change
     //setHopperRPM() to setHopperPower() in appropriate commands
-    public void setHopperPower(double rpm){
-        m_hopper.setVoltage(rpm);
+    public void setHopperPower(double volts){
+        m_hopper.setVoltage(volts);
     }
 
     //return curremt rpm of hopper

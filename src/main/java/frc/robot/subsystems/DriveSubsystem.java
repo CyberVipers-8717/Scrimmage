@@ -64,7 +64,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The gyro sensor
   //CHANGE CAN ID LATER
-  private final Pigeon2 Gyro = new Pigeon2( 12);
+  private final Pigeon2 Gyro = new Pigeon2( 16);
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(

@@ -38,7 +38,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
     public ClimbSubsystem(){
         //Initialize climb motors (change device id ofc when the climb is on there)
-        m_climb = new SparkMax(67, MotorType.kBrushless);
+        m_climb = new SparkMax(13, MotorType.kBrushless);
 
         //Initialize encoders
         m_climbEncoder = m_climb.getEncoder();
