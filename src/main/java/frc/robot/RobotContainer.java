@@ -106,22 +106,35 @@ public class RobotContainer {
     then starts up the queuer to the same rpm (or to a fraction which can be
     changed in the specific command to start up the queuer).
   */
-  //Shooter voltage from 5.5 to 24
-    new JoystickButton(m_driverController, Button.kRightBumper.value)
-      .whileTrue(new ShootFuel2(m_shoot, 5.5));
+ 
 
     // new JoystickButton(m_driverController, Button.kLeftBumper.value)
     //   .whileTrue(new AlignToTagCommand(m_robotDrive, "limelight-front"));
-
+    
+    //Shooter voltage from 5.5 to 24
+    new JoystickButton(m_driverController, Button.kRightBumper.value)
+      .whileTrue(new ShootFuel2(m_shoot, 5.5));
     new JoystickButton(m_driverController, Button.kA.value)
       .whileTrue(new ShootFuel2(m_shoot, 7.5));
+    new JoystickButton(m_driverController, Button.kB.value)
+      .whileTrue(new ShootFuel2(m_shoot, 9.5));
+    new JoystickButton(m_driverController, Button.kY.value)
+      .whileTrue(new ShootFuel2(m_shoot, 11.5));
+    new JoystickButton(m_driverController, Button.kX.value)
+      .whileTrue(new ShootFuel2(m_shoot, 13.5));
+
+   /* 
+    new JoystickButton(m_driverController, Button.kRightBumper.value)
+      .whileTrue(new ShootFuel(m_shoot, 5.5));  
+    new JoystickButton(m_driverController, Button.kA.value)
+      .whileTrue(new ShootFuel(m_shoot, 7.5));
     new JoystickButton(m_driverController, Button.kB.value)
       .whileTrue(new ShootFuel(m_shoot, 9.5));
     new JoystickButton(m_driverController, Button.kY.value)
       .whileTrue(new ShootFuel(m_shoot, 11.5));
     new JoystickButton(m_driverController, Button.kX.value)
       .whileTrue(new ShootFuel(m_shoot, 13.5));
-    
+    */
     
     
 
