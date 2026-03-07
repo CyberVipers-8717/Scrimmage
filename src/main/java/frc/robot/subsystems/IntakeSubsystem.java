@@ -116,6 +116,21 @@ public class IntakeSubsystem extends SubsystemBase{
         m_intake.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
+    //Set and return volts of intake motor
+    public void setIntakePower(double volts){
+        m_intake.setVoltage(volts);
+    }
+    
+    //Return the current volts of the intake motor
+    public double getIntakeVolts(){
+        return intakeEncoder.getVelocity();
+    }
+
+    //Return the current draw of the intake motor
+    public double getIntakeCurrent(){
+        return m_intake.getOutputCurrent();
+    }
+
 }
 
 
