@@ -37,7 +37,7 @@ public class ShooterSubsystem extends SubsystemBase{
 
     //PID variables for shooter & queuer
     //Starting values for now, change to meet needs
-    private static final double shooter_kP = 0.0001;
+    private static final double shooter_kP = 0.2;
     private static final double shooter_kI = 0;
     private static final double shooter_kD = 0.0001;
     

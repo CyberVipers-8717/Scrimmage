@@ -30,7 +30,7 @@ public class ClimbSubsystem extends SubsystemBase {
     //PID variavles for da climb
     //change and tune these if needed
     private static final double climb_kP = 0.0001;
-    private static final double climb_kI = 0;
+    private static final double climb_kI = 0.0001;
     private static final double climb_kD = 0.0001;
 
     //1 / 5676 (Neo motor max speed)
