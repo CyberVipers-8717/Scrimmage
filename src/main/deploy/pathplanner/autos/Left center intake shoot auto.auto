@@ -33,6 +33,24 @@
           "data": {
             "name": "Shoot Fuel"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Climb Up"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Short shoot right to climb"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Climb Down"
+          }
         }
       ]
     }
