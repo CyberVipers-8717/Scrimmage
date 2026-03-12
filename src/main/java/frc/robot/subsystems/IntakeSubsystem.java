@@ -133,6 +133,11 @@ public class IntakeSubsystem extends SubsystemBase{
     public void setLiftPower(double pos) {
         lift1Controller.setSetpoint(pos, SparkMax.ControlType.kPosition);
     }
+
+    public void setMotor(double speed) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setMotor'");
+    }
     
 }
 

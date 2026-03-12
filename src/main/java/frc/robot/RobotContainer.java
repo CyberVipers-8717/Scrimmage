@@ -10,11 +10,15 @@ import frc.robot.commands.AlignToTagCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveToTag;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.RunClimb;
+import frc.robot.commands.RunIntake;
 import frc.robot.commands.ShootFuel;
 import frc.robot.commands.ShootFuel2;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -41,6 +45,8 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ShooterSubsystem m_shoot = new ShooterSubsystem();
+  private final ClimbSubsystem m_climb = new ClimbSubsystem();
+  private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -122,6 +128,16 @@ public class RobotContainer {
       .whileTrue(new ShootFuel2(m_shoot, 11.5));
     new JoystickButton(m_driverController, Button.kX.value)
       .whileTrue(new ShootFuel2(m_shoot, 13.5));
+    //Climb
+    new JoystickButton(m_driverController, Button.kX.value)
+      .whileTrue(new RunClimb(m_climb, .1));
+    new JoystickButton(m_driverController, Button.kX.value)
+      .whileTrue(new RunClimb(m_climb, -.1));
+    //Intake
+    new JoystickButton(m_driverController, Button.kX.value)
+      .whileTrue(new RunIntake(m_intake, -.1));
+    //Queuer
+    
 
    /* 
     new JoystickButton(m_driverController, Button.kRightBumper.value)
