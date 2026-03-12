@@ -23,13 +23,13 @@ public class RunIntake extends Command {
 
     @Override
     public void execute() {
-        m_intake.setMotor(speed);
+        m_intake.setIntakeMotor(speed);
     }
 
     @Override
     //turns off motor when command ends
     public void end(boolean interrupted) {
-        m_intake.setMotor(0);
+        m_intake.setIntakeMotor(0);
     }
 
     @Override

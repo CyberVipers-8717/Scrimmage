@@ -51,7 +51,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
         //Set up configurations, start with idle mode and current limit
         climbConfig.idleMode(IdleMode.kBrake);
-        climbConfig.smartCurrentLimit(40); //Stall limit based off 2024 code
+        climbConfig.smartCurrentLimit(60); 
         //Now set up closed loop control configs
         climbConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)

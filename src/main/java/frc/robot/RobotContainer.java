@@ -5,13 +5,11 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.AlignToTagCommand;
 //import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.DriveToTag;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.RunClimb;
 import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunIntakeLift;
 import frc.robot.commands.ShootFuel;
 import frc.robot.commands.ShootFuel2;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -19,7 +17,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.utils.AnalogTrigger;
+import frc.robot.Utils.AnalogTrigger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -54,6 +52,7 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   //private final CommandXboxController m_driverController = new CommandXboxController(0);
   private final XboxController m_driverController = new XboxController(0);
+  private final XboxController m_manipulatorController = new XboxController(1);
 
 
   private final SendableChooser<Command> autoChooser;
@@ -120,11 +119,11 @@ public class RobotContainer {
     //   .whileTrue(new AlignToTagCommand(m_robotDrive, "limelight-front"));
     
     //Shooter voltage from 5.5 to 24
-    new JoystickButton(m_driverController, Button.kRightBumper.value) // Slow hub shoot
+    new JoystickButton(m_manipulatorController, Button.kRightBumper.value) // Slow hub shoot
       .whileTrue(new ShootFuel2(m_shoot, 5.5));
-    Trigger driverLeftTrigger = new AnalogTrigger(m_driverController, 3, 0.5);
-    driverLeftTrigger.whileTrue(new InstantCommand(() -> System.out.println("test")));
-    new JoystickButton(m_driverController, Button.kLeftBumper.value) // Feeder shoot (passing fuel. ask kaylee if needed more power for specific things)
+    Trigger manipulatorLeftTrigger = new AnalogTrigger(m_manipulatorController, 2, 0.5);// fast hub shoot
+    manipulatorLeftTrigger.whileTrue(new InstantCommand(() -> System.out.println("test")));
+    new JoystickButton(m_manipulatorController, Button.kLeftBumper.value) // Feeder shoot (passing fuel. ask kaylee if needed more power for specific things)
       .whileTrue(new ShootFuel2(m_shoot, 9.5));
     // new JoystickButton(m_driverController, Button.kY.value)
     //   .whileTrue(new ShootFuel2(m_shoot, 11.5));
@@ -132,17 +131,20 @@ public class RobotContainer {
     //   .whileTrue(new ShootFuel2(m_shoot, 13.5));
 
     //Climb
-    new Trigger(() -> m_driverController.getPOV(0) == 0) //Climb up
+    new Trigger(() -> m_manipulatorController.getPOV(0) == 0) //Climb up
       .whileTrue(new RunClimb(m_climb, 0.1));
-    new Trigger(() -> m_driverController.getPOV(0) == 180) //Climb Down
+    new Trigger(() -> m_manipulatorController.getPOV(0) == 180) //Climb Down
       .whileTrue(new RunClimb(m_climb, -0.1));
   
     //Intake
-    Trigger driverRightTrigger = new AnalogTrigger(m_driverController, 2, 0.5);
-    driverRightTrigger.whileTrue(new InstantCommand(() -> System.out.println("test2")));
+    Trigger manipulatorRightTrigger = new AnalogTrigger(m_manipulatorController, 3, 0.5);
+    manipulatorRightTrigger.whileTrue(new InstantCommand(() -> System.out.println("test2")));
 
     //Intake lift
-    
+    new JoystickButton(m_manipulatorController, Button.kY.value) // Intake up
+      .onTrue(new RunIntakeLift(m_intake, 0.1));
+    new JoystickButton(m_manipulatorController, Button.kA.value) // Intake Down
+      .onTrue(new RunIntakeLift(m_intake, -0.1));
 
    /* 
     new JoystickButton(m_driverController, Button.kRightBumper.value)
@@ -168,6 +170,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return autoChooser.getSelected();
   }
 }
