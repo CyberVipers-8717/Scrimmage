@@ -19,6 +19,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.utils.AnalogTrigger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -29,6 +30,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -118,25 +120,28 @@ public class RobotContainer {
     //   .whileTrue(new AlignToTagCommand(m_robotDrive, "limelight-front"));
     
     //Shooter voltage from 5.5 to 24
-    new JoystickButton(m_driverController, Button.kRightBumper.value)
+    new JoystickButton(m_driverController, Button.kRightBumper.value) // Slow hub shoot
       .whileTrue(new ShootFuel2(m_shoot, 5.5));
-    new JoystickButton(m_driverController, Button.kA.value)
-      .whileTrue(new ShootFuel2(m_shoot, 7.5));
-    new JoystickButton(m_driverController, Button.kB.value)
+    Trigger driverLeftTrigger = new AnalogTrigger(m_driverController, 3, 0.5);
+    driverLeftTrigger.whileTrue(new InstantCommand(() -> System.out.println("test")));
+    new JoystickButton(m_driverController, Button.kLeftBumper.value) // Feeder shoot (passing fuel. ask kaylee if needed more power for specific things)
       .whileTrue(new ShootFuel2(m_shoot, 9.5));
-    new JoystickButton(m_driverController, Button.kY.value)
-      .whileTrue(new ShootFuel2(m_shoot, 11.5));
-    new JoystickButton(m_driverController, Button.kX.value)
-      .whileTrue(new ShootFuel2(m_shoot, 13.5));
+    // new JoystickButton(m_driverController, Button.kY.value)
+    //   .whileTrue(new ShootFuel2(m_shoot, 11.5));
+    // new JoystickButton(m_driverController, Button.kX.value)
+    //   .whileTrue(new ShootFuel2(m_shoot, 13.5));
+
     //Climb
-    new JoystickButton(m_driverController, Button.kX.value)
-      .whileTrue(new RunClimb(m_climb, .1));
-    new JoystickButton(m_driverController, Button.kX.value)
-      .whileTrue(new RunClimb(m_climb, -.1));
+    new Trigger(() -> m_driverController.getPOV(0) == 0) //Climb up
+      .whileTrue(new RunClimb(m_climb, 0.1));
+    new Trigger(() -> m_driverController.getPOV(0) == 180) //Climb Down
+      .whileTrue(new RunClimb(m_climb, -0.1));
+  
     //Intake
-    new JoystickButton(m_driverController, Button.kX.value)
-      .whileTrue(new RunIntake(m_intake, -.1));
-    //Queuer
+    Trigger driverRightTrigger = new AnalogTrigger(m_driverController, 2, 0.5);
+    driverRightTrigger.whileTrue(new InstantCommand(() -> System.out.println("test2")));
+
+    //Intake lift
     
 
    /* 
