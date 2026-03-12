@@ -37,17 +37,17 @@ public class IntakeSubsystem extends SubsystemBase{
 
      //PID variables for shooter & queuer
     //Starting values for now, change to meet needs
-    private static final double lift1_kP = 0.01;
-    private static final double lift1_kI = 0;
-    private static final double lift1_kD = 0.01;
+    private static final double lift1_kP = 0.075;
+    private static final double lift1_kI = 0.003;
+    private static final double lift1_kD = 0;
     
     // private static final double lift2_kP = 0.0001;
     // private static final double lift2_kI = 0;
     // private static final double lift2_kD = 0.0001;
 
-    private static final double intake_kP = 0.0001;
+    private static final double intake_kP = 0.2;
     private static final double intake_kI = 0;
-    private static final double intake_kD = 0.0001;
+    private static final double intake_kD = 0;
     
     // 1 / 5676 (Neo motor max speed)
     private static final double FF = 0.000175;
