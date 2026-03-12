@@ -33,7 +33,7 @@ public class IntakeSubsystem extends SubsystemBase{
 
      //PID variables for shooter & queuer
     //Starting values for now, change to meet needs
-    private static final double lift1_kP = 0.075;
+    private static final double lift1_kP = 0.05;
     private static final double lift1_kI = 0.003;
     private static final double lift1_kD = 0;
     
@@ -41,6 +41,10 @@ public class IntakeSubsystem extends SubsystemBase{
     private static final double intake_kP = 0.2;
     private static final double intake_kI = 0;
     private static final double intake_kD = 0;
+
+    // Holding variables
+    private boolean holding = false;
+    private double holdPosition = 0;
     
     // 1 / 5676 (Neo motor max speed)
     private static final double FF = 0.000175;
@@ -57,6 +61,10 @@ public class IntakeSubsystem extends SubsystemBase{
         lift1Encoder = m_lift1.getEncoder();
         intakeEncoder = m_intake.getEncoder();
 
+        // Set encoders to 0
+        lift1Encoder.setPosition(0);
+        intakeEncoder.setPosition(0);
+
         //Initialize PID controllers
         lift1Controller = m_lift1.getClosedLoopController();
         intakeController = m_intake.getClosedLoopController();
@@ -72,7 +80,7 @@ public class IntakeSubsystem extends SubsystemBase{
         lift1Config.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(lift1_kP, lift1_kI, lift1_kD)
-            .outputRange(-1, 1);
+            .outputRange(-0.05, 0.05);
         
 
         //Same for the intake config
@@ -118,7 +126,23 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     public void setLiftMotor(double speed) {
-       lift1Controller.setSetpoint(speed, SparkMax.ControlType.kVelocity);
+        if (speed != 0) {
+            if (getLiftPosition() <= 8 && speed > 0) {
+                m_lift1.set(speed);
+            } else if (getLiftPosition() >= 0 && speed < 0) {
+                m_lift1.set(speed);
+            } else {
+                m_lift1.set(0);
+            }
+            holding = false;
+        }
+        else {
+            if (!holding) {
+                holdPosition = getLiftPosition();
+                holding = true;
+            }
+            lift1Controller.setSetpoint(holdPosition, SparkMax.ControlType.kPosition);
+        }
     }
 
     public void setIntakeMotor(double speed) {

@@ -58,7 +58,7 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    NamedCommands.registerCommand("Shoot Fuel", new ShootFuel(m_shoot, 2500).withTimeout(5));
+    NamedCommands.registerCommand("Shoot Fuel", new ShootFuel(m_shoot, 7).withTimeout(5));
     // Configure the trigger bindings
     configureBindings();
 
@@ -131,10 +131,10 @@ public class RobotContainer {
     //   .whileTrue(new ShootFuel2(m_shoot, 13.5));
 
     //Climb
-    new Trigger(() -> m_manipulatorController.getPOV(0) == 0) //Climb up
-      .whileTrue(new RunClimb(m_climb, 0.1));
-    new Trigger(() -> m_manipulatorController.getPOV(0) == 180) //Climb Down
-      .whileTrue(new RunClimb(m_climb, -0.1));
+    // new Trigger(() -> m_manipulatorController.getPOV(0) == 0) //Climb up
+    //   .whileTrue(new RunClimb(m_climb, 0.1));
+    // new Trigger(() -> m_manipulatorController.getPOV(0) == 180) //Climb Down
+    //   .whileTrue(new RunClimb(m_climb, -0.1));
   
     //Intake
     Trigger manipulatorRightTrigger = new AnalogTrigger(m_manipulatorController, 3, 0.5);
@@ -142,9 +142,9 @@ public class RobotContainer {
 
     //Intake lift
     new JoystickButton(m_manipulatorController, Button.kY.value) // Intake up
-      .onTrue(new RunIntakeLift(m_intake, 0.1));
-    new JoystickButton(m_manipulatorController, Button.kA.value) // Intake Down
       .onTrue(new RunIntakeLift(m_intake, -0.1));
+    new JoystickButton(m_manipulatorController, Button.kA.value) // Intake Down
+      .onTrue(new RunIntakeLift(m_intake, 0.1));
 
    /* 
     new JoystickButton(m_driverController, Button.kRightBumper.value)
