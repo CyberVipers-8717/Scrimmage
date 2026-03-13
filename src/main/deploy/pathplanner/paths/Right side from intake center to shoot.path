@@ -3,61 +3,61 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.718336314847942,
-        "y": 4.594776386404293
+        "x": 7.750787119856888,
+        "y": 3.4752236135957064
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.734561717358927,
-        "y": 5.4384973166398485
+        "x": 7.9130411449016105,
+        "y": 1.3821466905187831
       },
       "isLocked": false,
-      "linkedName": "back to shoot left"
+      "linkedName": "Back to shoot right"
     },
     {
       "anchor": {
-        "x": 7.718336314847942,
-        "y": 6.801431127015519
+        "x": 7.491180679785331,
+        "y": 0.8467084078711979
       },
       "prevControl": {
-        "x": 7.7183363148307,
-        "y": 5.340784381616207
+        "x": 7.616784566174588,
+        "y": 1.0628649801143633
       },
       "nextControl": {
-        "x": 7.718336314854454,
-        "y": 7.353094812167576
+        "x": 7.227965914949202,
+        "y": 0.39373196768013363
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.19144901610669,
-        "y": 7.336869409663104
+        "x": 3.499731663685152,
+        "y": 0.6682289803220032
       },
       "prevControl": {
-        "x": 4.521932021473416,
-        "y": 7.547799642221243
+        "x": 3.8375829480804624,
+        "y": 0.4803979003496738
       },
       "nextControl": {
-        "x": 2.5982977307021016,
-        "y": 7.242833230269695
+        "x": 2.712800867758517,
+        "y": 1.1057293483520862
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.483506261187191,
-        "y": 4.951735241505681
+        "x": 3.499731663685152,
+        "y": 3.1344901610017883
       },
       "prevControl": {
-        "x": 2.428855098396493,
-        "y": 5.260017889090653
+        "x": 3.070827118135869,
+        "y": 2.5816777867468446
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Short Shoot right"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -65,11 +65,11 @@
   "pointTowardsZones": [
     {
       "fieldPosition": {
-        "x": 4.5,
+        "x": 4.65,
         "y": 4.0
       },
       "rotationOffset": 0.0,
-      "minWaypointRelativePos": 1.1491525423728812,
+      "minWaypointRelativePos": 1.1593220338983052,
       "maxWaypointRelativePos": 3.0,
       "name": "Point Towards Zone"
     }
@@ -85,13 +85,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -48.1221304621157
+    "rotation": 40.42607874009912
   },
   "reversed": false,
-  "folder": "Full left side intake to shoot",
+  "folder": "full right side intake to shoot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 88.56790381583546
   },
   "useDefaultConstraints": true
 }

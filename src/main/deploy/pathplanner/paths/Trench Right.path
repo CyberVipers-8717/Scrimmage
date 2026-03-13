@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.4635387323943667,
-        "y": 4.945193661971831
+        "x": 3.6619856887298745,
+        "y": 0.6357781753130587
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5402796399690444,
-        "y": 5.468128497049076
+        "x": 4.661985688729876,
+        "y": 0.6357781753130587
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.8667077464788742,
-        "y": 5.8553873239436625
+        "x": 7.750787119856888,
+        "y": 0.6357781753130587
       },
       "prevControl": {
-        "x": 2.6684478112149037,
-        "y": 5.396149563569437
+        "x": 6.750787119856888,
+        "y": 0.6357781753130587
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Back up 1"
+      "linkedName": "Right side intake center"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -25.5
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Simple auto paths",
+  "folder": "full right side intake to shoot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -25.5
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

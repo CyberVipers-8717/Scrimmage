@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "trench Path left"
+            "pathName": "Trench Right"
           }
         },
         {
@@ -25,13 +25,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "intake fuel left side center"
+            "pathName": "Intake Fuel Right Side Center"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "left side from center intake to shoot"
+            "pathName": "Right side from intake center to shoot"
           }
         },
         {
