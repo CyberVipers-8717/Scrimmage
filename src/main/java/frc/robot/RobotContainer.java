@@ -67,9 +67,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getRightY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
 
@@ -121,10 +121,18 @@ public class RobotContainer {
     //Shooter voltage from 5.5 to 24
     new JoystickButton(m_manipulatorController, Button.kRightBumper.value) // Slow hub shoot
       .whileTrue(new ShootFuel2(m_shoot, 5.5));
-    Trigger manipulatorLeftTrigger = new AnalogTrigger(m_manipulatorController, 2, 0.5);// fast hub shoot
-    manipulatorLeftTrigger.whileTrue(new InstantCommand(() -> System.out.println("test")));
+
+    // Intake 
+    // Trigger manipulatorLeftTrigger = new AnalogTrigger(m_manipulatorController, 2, 0.5);// fast hub shoot
+    // manipulatorLeftTrigger.whileTrue(new RunIntake(m_intake, 2));
+
+    new JoystickButton(m_manipulatorController, Button.kB.value)
+      .whileTrue(new InstantCommand(() -> System.out.println("test")));
+
+    // Feeder shoot
     new JoystickButton(m_manipulatorController, Button.kLeftBumper.value) // Feeder shoot (passing fuel. ask kaylee if needed more power for specific things)
       .whileTrue(new ShootFuel2(m_shoot, 9.5));
+
     // new JoystickButton(m_driverController, Button.kY.value)
     //   .whileTrue(new ShootFuel2(m_shoot, 11.5));
     // new JoystickButton(m_driverController, Button.kX.value)
@@ -136,7 +144,7 @@ public class RobotContainer {
     // new Trigger(() -> m_manipulatorController.getPOV(0) == 180) //Climb Down
     //   .whileTrue(new RunClimb(m_climb, -0.1));
   
-    //Intake
+    //Fast shoot
     Trigger manipulatorRightTrigger = new AnalogTrigger(m_manipulatorController, 3, 0.5);
     manipulatorRightTrigger.whileTrue(new InstantCommand(() -> System.out.println("test2")));
 
@@ -145,6 +153,7 @@ public class RobotContainer {
       .onTrue(new RunIntakeLift(m_intake, -0.1));
     new JoystickButton(m_manipulatorController, Button.kA.value) // Intake Down
       .onTrue(new RunIntakeLift(m_intake, 0.1));
+      
 
    /* 
     new JoystickButton(m_driverController, Button.kRightBumper.value)

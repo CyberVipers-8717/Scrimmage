@@ -123,6 +123,11 @@ public class ShooterSubsystem extends SubsystemBase{
         shooterController.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
     }
 
+    // Set shooter to specific voltage
+    public void setShooterVoltage(double voltage) {
+        shooterController.setSetpoint(voltage, SparkMax.ControlType.kVoltage);
+    }
+
     // Method to set the shooter motor speed based on percentage of speed, not rpm
     // Change number inside .set() to desired percent (range from -1 to 1) and change
     // setShooterRPM() to setShooterPower() in appropriate commands
@@ -149,8 +154,8 @@ public class ShooterSubsystem extends SubsystemBase{
     //Method to set the queuer motor speed based on percentage of speed, not rpm
     //Change number inside .set() to desired percent (range from -1 to 1) and change
     //setQueuerRPM() to setQueuerPower() in appropriate commands
-    public void setQueuerPower(double rpm){
-        m_queuer.setVoltage(rpm);
+    public void setQueuerPower(double voltage){
+        m_queuer.setVoltage(voltage);
     }
 
     //Return the current RPM of the queuer
@@ -195,7 +200,7 @@ public class ShooterSubsystem extends SubsystemBase{
     public void stop(){
         m_shooter.stopMotor();
         m_queuer.stopMotor();
-        m_hopper.stopMotor();
+        m_hopper.setVoltage(0);
     }
 
     //Periodic function is predefined and occurs periodically (50 times a second)

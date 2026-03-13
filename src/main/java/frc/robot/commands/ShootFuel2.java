@@ -8,15 +8,15 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class ShootFuel2 extends Command {
     //Create an instance of the specific subsystem class you want to create the command for
     private final ShooterSubsystem launcher;
-    //variable to represent the speed in either rpm or power
-    private final double speed;
+    //variable to represent the voltage
+    private final double voltage;
     //Timer class object to use a timer to track seconds elapsed 
     private final Timer timer = new Timer();
 
     //Constructor for command
-    public ShootFuel2(ShooterSubsystem launcher, double speed){
+    public ShootFuel2(ShooterSubsystem launcher, double voltage){
         this.launcher = launcher;
-        this.speed = speed;
+        this.voltage = voltage;
         addRequirements(launcher);
     }
 
@@ -25,7 +25,7 @@ public class ShootFuel2 extends Command {
     //Outputs a message to let us know the command has been called and initialized
     @Override
     public void initialize(){
-        launcher.setShooterRPM(speed);
+        launcher.setShooterVoltage(voltage);
         timer.start();
         System.out.println("***Shooter has started!***");
     }
@@ -38,8 +38,8 @@ public class ShootFuel2 extends Command {
         //Could also use:
         //if(timer.get() > 1){}
         if(timer.hasElapsed(1)){
-            launcher.setQueuerPower(speed);
-            launcher.setHopperPower(speed * 0.1); // sets hopper speed slower
+            launcher.setQueuerPower(voltage);
+            launcher.setHopperPower(-voltage * 0.4); // sets hopper voltage slower
             // System.out.println("Shooter at target RPM, Queuer activated.");
             // System.out.println("Shooter is running at: " + launcher.getShooterRPM());
             // System.out.println("Queuer is running at: " + launcher.getQueuerRPM());
