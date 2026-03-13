@@ -6,13 +6,13 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class RunIntake extends Command {
     private final IntakeSubsystem m_intake;
-    private double volts;
+    private double speed;
     
 
     //variable speed
-    public RunIntake(IntakeSubsystem IntakeSubsystem, double volts) {
+    public RunIntake(IntakeSubsystem IntakeSubsystem, double speed) {
         m_intake = IntakeSubsystem;
-        this.volts = volts;
+        this.speed = speed;
         addRequirements(m_intake);
     }
 
@@ -23,17 +23,17 @@ public class RunIntake extends Command {
 
     @Override
     public void execute() {
-        m_intake.setIntakePower(volts);
+        m_intake.setIntakeMotor(speed);
     }
 
     @Override
     //turns off motor when command ends
     public void end(boolean interrupted) {
-        m_intake.setIntakePower(0);
+        m_intake.setIntakeMotor(0);
     }
 
     @Override
     public boolean isFinished() {
-        return true;
+        return false;
     }
 }

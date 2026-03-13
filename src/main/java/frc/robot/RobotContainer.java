@@ -58,7 +58,7 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    NamedCommands.registerCommand("Shoot Fuel", new ShootFuel(m_shoot, 7).withTimeout(5));
+    NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 10.3, 0.65).withTimeout(5));
     // Configure the trigger bindings
     configureBindings();
 
@@ -89,13 +89,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    //new Trigger(m_exampleSubsystem::exampleCondition).onTrue(new ExampleCommand(m_exampleSubsystem));
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    //m_driverController.b().whileTrue(new ShootFuel(m_shoot, 1100));
 
+    //***DRIVE COMMANDS: SET ROBOT WHEELS IN X POSITION ***/
     //While X button is held, the wheels will be set in an X formation
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
       .whileTrue(new RunCommand(
@@ -103,11 +98,12 @@ public class RobotContainer {
             m_robotDrive));
     
 
+    //RESET HEADING (IF NEEDED)
     //  new JoystickButton(m_driverController, Button.kX.value)
     //   .whileTrue(new RunCommand(
     //         () -> m_robotDrive.zeroHeading(),
     //         m_robotDrive));
-    /*
+  /*
     While the Right Bumper is held, the shoot command sequence is executed.
     The shoot command sequence first spins the shooter to the set rpm below,
     then starts up the queuer to the same rpm (or to a fraction which can be
@@ -115,39 +111,50 @@ public class RobotContainer {
   */
  
 
-    // new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    //   .whileTrue(new AlignToTagCommand(m_robotDrive, "limelight-front"));
-    
-    //Shooter voltage from 5.5 to 24
+  //***** SHOOTER COMMANDS: SLOW SHOOTING, FAST SHOOTING, BUTTON FOR INDEXER*****/    
+    //Shoot to alliance zone
     new JoystickButton(m_manipulatorController, Button.kRightBumper.value) // Slow hub shoot
-      .whileTrue(new ShootFuel2(m_shoot, 5.5));
-
-    // Intake 
-    // Trigger manipulatorLeftTrigger = new AnalogTrigger(m_manipulatorController, 2, 0.5);// fast hub shoot
-    // manipulatorLeftTrigger.whileTrue(new RunIntake(m_intake, 2));
-
-    new JoystickButton(m_manipulatorController, Button.kB.value)
-      .whileTrue(new InstantCommand(() -> System.out.println("test")));
-
+      .whileTrue(new ShootFuel2(m_shoot, 10.5, 0.65));
+    
     // Feeder shoot
-    new JoystickButton(m_manipulatorController, Button.kLeftBumper.value) // Feeder shoot (passing fuel. ask kaylee if needed more power for specific things)
-      .whileTrue(new ShootFuel2(m_shoot, 9.5));
-
-    // new JoystickButton(m_driverController, Button.kY.value)
-    //   .whileTrue(new ShootFuel2(m_shoot, 11.5));
-    // new JoystickButton(m_driverController, Button.kX.value)
+    // new JoystickButton(m_manipulatorController, Button.kLeftBumper.value) // Feeder shoot (passing fuel. ask kaylee if needed more power for specific things)
     //   .whileTrue(new ShootFuel2(m_shoot, 13.5));
-
-    //Climb
-    // new Trigger(() -> m_manipulatorController.getPOV(0) == 0) //Climb up
-    //   .whileTrue(new RunClimb(m_climb, 0.1));
-    // new Trigger(() -> m_manipulatorController.getPOV(0) == 180) //Climb Down
-    //   .whileTrue(new RunClimb(m_climb, -0.1));
-  
+    
     //Fast shoot
     Trigger manipulatorRightTrigger = new AnalogTrigger(m_manipulatorController, 3, 0.5);
-    manipulatorRightTrigger.whileTrue(new InstantCommand(() -> System.out.println("test2")));
+    manipulatorRightTrigger.whileTrue(new ShootFuel2(m_shoot, 12, 0.74));
 
+    //Reverse stuck shooter
+    new JoystickButton(m_manipulatorController, Button.kB.value)
+      .whileTrue(new ShootFuel2(m_shoot, -5, 0.5));
+
+    //Separate button for indexer
+    //   new JoystickButton(m_manipulatorController, Button.kX.value)
+    // .whileTrue(new RunCommand(
+    //       () -> m_shoot.setHopperPower(6),
+    //       m_shoot));
+
+
+
+    //**** INTAKE COMMANDS: RUN INTAKE, RUN INTAKE LIFT ****/
+    //Intake through trigger
+    Trigger manipulatorLeftTrigger = new AnalogTrigger(m_manipulatorController, 2, 0.5);// fast hub shoot
+    manipulatorLeftTrigger.whileTrue(new RunIntake(m_intake, 0.95));
+    
+    //Intake through B button
+    // new JoystickButton(m_manipulatorController, Button.kB.value)
+    //   .whileTrue(new RunIntake(m_intake, 1));
+
+
+
+    //**** CLIMB COMMANDS: RUN CLIMB(up and down) *****/
+    //Climb
+    new Trigger(() -> m_manipulatorController.getPOV(0) == 0) //Climb up
+      .whileTrue(new RunClimb(m_climb, -0.3));
+    new Trigger(() -> m_manipulatorController.getPOV(0) == 180) //Climb Down
+      .whileTrue(new RunClimb(m_climb, 0.3));
+  
+    
     //Intake lift
     new JoystickButton(m_manipulatorController, Button.kY.value) // Intake up
       .onTrue(new RunIntakeLift(m_intake, -0.1));
@@ -168,8 +175,6 @@ public class RobotContainer {
       .whileTrue(new ShootFuel(m_shoot, 13.5));
     */
     
-    
-
   }
 
   /**

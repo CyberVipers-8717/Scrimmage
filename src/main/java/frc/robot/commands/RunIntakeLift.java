@@ -33,7 +33,7 @@ public class RunIntakeLift extends Command {
     public boolean isFinished() {
         if (speed < 0 && m_intake.getLiftPosition() <= 0 ) { //going down and hit bottom
             return true;     
-        } else if (speed > 0 && m_intake.getLiftPosition() >= 100) { //going up and hit top
+        } else if (speed > 0 && m_intake.getLiftPosition() >= 12.4) { //going up and hit top
             return true; 
         } else {
             return false; 

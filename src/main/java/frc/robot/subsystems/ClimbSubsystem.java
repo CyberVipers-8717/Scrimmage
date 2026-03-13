@@ -37,6 +37,7 @@ public class ClimbSubsystem extends SubsystemBase {
     private static final double FF = 0.000175;
 
     public ClimbSubsystem(){
+       
         //Initialize climb motors (change device id ofc when the climb is on there)
         m_climb = new SparkMax(13, MotorType.kBrushless);
 
@@ -63,7 +64,8 @@ public class ClimbSubsystem extends SubsystemBase {
         climbConfig.inverted(false);
         m_climb.configure(climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        
+        //reset encoder
+        m_climbEncoder.setPosition(0);
     }
 
     //Big Constructor is finished, create helpful methods for simple comands or to return to specific values

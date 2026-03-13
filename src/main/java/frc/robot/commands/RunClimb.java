@@ -24,6 +24,7 @@ public class RunClimb extends Command {
     @Override
     public void execute() {
         m_climb.setMotor(speed);
+        System.out.println(m_climb.getClimbPosition());
     }
 
     @Override
@@ -35,9 +36,9 @@ public class RunClimb extends Command {
     @Override
     //false: runs continuously, true: runs once and stops
     public boolean isFinished() {
-        if (speed < 0 && m_climb.getClimbPosition() <= 0 ) { //going down and hit bottom
+        if (speed > 0 && m_climb.getClimbPosition() >= -1 ) { //going down and hit bottom
             return true;     
-        } else if (speed > 0 && m_climb.getClimbPosition() >= 100) { //going up and hit top
+        } else if (speed < 0 && m_climb.getClimbPosition() <= -92) { //going up and hit top
             return true; 
         } else {
             return false; 

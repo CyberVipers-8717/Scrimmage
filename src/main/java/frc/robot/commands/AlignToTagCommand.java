@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Limelight.TagAlignment;
 import frc.robot.subsystems.DriveSubsystem;
@@ -14,11 +15,11 @@ public AlignToTagCommand(DriveSubsystem drive, String limelightName) {
     this.drive = drive;
     this.limelightName = limelightName;
     addRequirements(drive);
-    System.out.println("AlignToTag Constructor Called");
+    SmartDashboard.getData("AlignToTag Constructor Called");
 }
 
 public void initialize(){
-    System.out.println("AlignToTag Initialized");
+    SmartDashboard.getData("AlignToTag Initialized");
 }
 
 public void execute() {

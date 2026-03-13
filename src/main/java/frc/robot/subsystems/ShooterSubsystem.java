@@ -128,6 +128,11 @@ public class ShooterSubsystem extends SubsystemBase{
         shooterController.setSetpoint(voltage, SparkMax.ControlType.kVoltage);
     }
 
+    // Set shooter to specific speed
+    public void setShooterSpeed(double speed) {
+        m_shooter.set(speed);
+    }
+
     // Method to set the shooter motor speed based on percentage of speed, not rpm
     // Change number inside .set() to desired percent (range from -1 to 1) and change
     // setShooterRPM() to setShooterPower() in appropriate commands
@@ -180,6 +185,10 @@ public class ShooterSubsystem extends SubsystemBase{
         m_hopper.setVoltage(volts);
     }
 
+    public void setHopperSpeed(double speed) {
+        m_hopper.set(speed);
+    }
+
     //return curremt rpm of hopper
     public double getHopperRPM(){
         return hopperEncoder.getVelocity();
@@ -200,7 +209,7 @@ public class ShooterSubsystem extends SubsystemBase{
     public void stop(){
         m_shooter.stopMotor();
         m_queuer.stopMotor();
-        m_hopper.setVoltage(0);
+        m_hopper.stopMotor();
     }
 
     //Periodic function is predefined and occurs periodically (50 times a second)
