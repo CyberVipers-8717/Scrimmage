@@ -28,7 +28,7 @@ public class ShootFuel2 extends Command {
     //Outputs a message to let us know the command has been called and initialized
     @Override
     public void initialize(){
-        launcher.setShooterSpeed(speed);
+        launcher.setShooterRPM(speed);
         timer.start();
         System.out.println("***Shooter has started!***");
     }
@@ -40,9 +40,9 @@ public class ShootFuel2 extends Command {
     public void execute(){
         //Could also use:
         //if(timer.get() > 1){}
-        if(timer.hasElapsed(1)){
+        if(timer.hasElapsed(1.5)){
             launcher.setQueuerPower(voltage);
-            launcher.setShooterSpeed(speed);
+            launcher.setShooterRPM(speed);
             SmartDashboard.putNumber("Shooter speed: ", launcher.getShooterRPM());
             SmartDashboard.putNumber("Kicker speed: ", launcher.getQueuerRPM());
             // launcher.setHopperPower(-0.4); // sets hopper voltage slower

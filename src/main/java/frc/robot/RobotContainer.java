@@ -17,7 +17,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.Utils.AnalogTrigger;
+import frc.robot.utils.AnalogTrigger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -58,7 +58,7 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 11, 0.75).withTimeout(5));
+    NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 11, 3000).withTimeout(5));
     // Configure the trigger bindings
     configureBindings();
 
@@ -114,7 +114,7 @@ public class RobotContainer {
   //***** SHOOTER COMMANDS: SLOW SHOOTING, FAST SHOOTING, BUTTON FOR INDEXER*****/    
     //Shoot to alliance zone
     new JoystickButton(m_manipulatorController, Button.kRightBumper.value) // Slow hub shoot
-      .whileTrue(new ShootFuel2(m_shoot, 10.5, 0.75));
+      .whileTrue(new ShootFuel2(m_shoot, 10.5, 4500));
     
     // Feeder shoot
     // new JoystickButton(m_manipulatorController, Button.kLeftBumper.value) // Feeder shoot (passing fuel. ask kaylee if needed more power for specific things)
@@ -122,11 +122,11 @@ public class RobotContainer {
     
     //Fast shoot
     Trigger manipulatorRightTrigger = new AnalogTrigger(m_manipulatorController, 3, 0.5);
-    manipulatorRightTrigger.whileTrue(new ShootFuel2(m_shoot, 11.9, 0.85));
+    manipulatorRightTrigger.whileTrue(new ShootFuel2(m_shoot, 11.9, 3500));
 
     //Reverse stuck shooter
     new JoystickButton(m_manipulatorController, Button.kB.value)
-      .whileTrue(new ShootFuel2(m_shoot, -5, -0.75));
+      .whileTrue(new ShootFuel2(m_shoot, -5, -3000));
 
     //Separate button for indexer
     //   new JoystickButton(m_manipulatorController, Button.kX.value)
