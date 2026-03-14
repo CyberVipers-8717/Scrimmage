@@ -2,7 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Timer;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShootFuel2 extends Command {
@@ -42,6 +42,9 @@ public class ShootFuel2 extends Command {
         //if(timer.get() > 1){}
         if(timer.hasElapsed(1)){
             launcher.setQueuerPower(voltage);
+            launcher.setShooterSpeed(speed);
+            SmartDashboard.putNumber("Shooter speed: ", launcher.getShooterRPM());
+            SmartDashboard.putNumber("Kicker speed: ", launcher.getQueuerRPM());
             // launcher.setHopperPower(-0.4); // sets hopper voltage slower
             // System.out.println("Shooter at target RPM, Queuer activated.");
             // System.out.println("Shooter is running at: " + launcher.getShooterRPM());
