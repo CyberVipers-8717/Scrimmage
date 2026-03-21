@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase{
  
-//Set up motors
+    //Set up motors
     private final SparkMax m_lift1;
     private final SparkMax m_intake;
     
@@ -27,14 +27,14 @@ public class IntakeSubsystem extends SubsystemBase{
     private final SparkMaxConfig lift1Config;
     private final SparkMaxConfig intakeConfig;
 
-    //PID Controllers for hopper motors
+    //PID Controllers for intake motors
     private final SparkClosedLoopController lift1Controller;
     private final SparkClosedLoopController intakeController;
 
-     //PID variables for shooter & queuer
+    //PID variables for lift & intake
     //Starting values for now, change to meet needs
-    private static final double lift1_kP = 0.05;
-    private static final double lift1_kI = 0.003;
+    private static final double lift1_kP = 0.0005;
+    private static final double lift1_kI = 0.00001;
     private static final double lift1_kD = 0;
     
    
@@ -102,9 +102,14 @@ public class IntakeSubsystem extends SubsystemBase{
         m_intake.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
-    //Set and return volts of intake motor
+    //Set intake power using voltage
     public void setIntakePower(double volts){
         m_intake.setVoltage(volts);
+    }
+
+    //Set intake speed
+    public void setIntakeRPM(double speed){
+        intakeController.setSetpoint(speed, SparkMax.ControlType.kVelocity);
     }
     
     //Return the current volts of the intake motor
@@ -125,13 +130,18 @@ public class IntakeSubsystem extends SubsystemBase{
         lift1Controller.setSetpoint(pos, SparkMax.ControlType.kPosition);
     }
 
+    public void stopLift(){
+        m_lift1.stopMotor();
+    }
+
     public void setLiftMotor(double speed) {
         if (speed != 0) {
-            if (getLiftPosition() <= 8 && speed > 0) {
+            if (getLiftPosition() <= 10 && speed > 0) {
                 m_lift1.set(speed);
             } else if (getLiftPosition() >= 0 && speed < 0) {
                 m_lift1.set(speed);
             } else {
+                System.out.println("********Subsystem end condition 1********");
                 m_lift1.set(0);
             }
             holding = false;
@@ -140,14 +150,24 @@ public class IntakeSubsystem extends SubsystemBase{
             if (!holding) {
                 holdPosition = getLiftPosition();
                 holding = true;
+                System.out.println("********Subsystem end condition 2********");
             }
             lift1Controller.setSetpoint(holdPosition, SparkMax.ControlType.kPosition);
         }
     }
 
+    public void setLift1Motor(double speed){
+        m_lift1.set(speed);
+    }
+
     public void setIntakeMotor(double speed) {
         m_intake.set(speed);
     }
+
+   //Periodic function is predefined and occurs periodically (50 times a second)
+    public void periodic(){
+        SmartDashboard.putNumber("Lift Position: ", getLiftPosition());
+    }   
 }
 
 
