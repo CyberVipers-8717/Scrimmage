@@ -40,21 +40,26 @@ public class ShootFuel2 extends Command {
     public void execute(){
         //Could also use:
         //if(timer.get() > 1){}
-        if(timer.hasElapsed(1.5)){
+        if (speed > 0){
+            if(timer.hasElapsed(1.5)){
+                launcher.setQueuerPower(voltage);
+                launcher.setShooterRPM(speed);
+                SmartDashboard.putNumber("Shooter speed: ", launcher.getShooterRPM());
+                SmartDashboard.putNumber("Kicker speed: ", launcher.getQueuerRPM());
+                // launcher.setHopperPower(-0.4); // sets hopper voltage slower
+                // System.out.println("Shooter at target RPM, Queuer activated.");
+                // System.out.println("Shooter is running at: " + launcher.getShooterRPM());
+                // System.out.println("Queuer is running at: " + launcher.getQueuerRPM());
+                // System.out.println("Queuer current (A): " + launcher.getQueuerCurrent());
+            } else {
+                launcher.stopQueuer();
+                // launcher.stopHopper();
+                // System.out.println("Waiting for shooter to reach target RPM.");
+                // System.out.println("Current RPM: " + launcher.getShooterRPM());
+            }
+        } else {
             launcher.setQueuerPower(voltage);
             launcher.setShooterRPM(speed);
-            SmartDashboard.putNumber("Shooter speed: ", launcher.getShooterRPM());
-            SmartDashboard.putNumber("Kicker speed: ", launcher.getQueuerRPM());
-            // launcher.setHopperPower(-0.4); // sets hopper voltage slower
-            // System.out.println("Shooter at target RPM, Queuer activated.");
-            // System.out.println("Shooter is running at: " + launcher.getShooterRPM());
-            // System.out.println("Queuer is running at: " + launcher.getQueuerRPM());
-            // System.out.println("Queuer current (A): " + launcher.getQueuerCurrent());
-        } else {
-            launcher.stopQueuer();
-            // launcher.stopHopper();
-            // System.out.println("Waiting for shooter to reach target RPM.");
-            // System.out.println("Current RPM: " + launcher.getShooterRPM());
         }
     }
 
