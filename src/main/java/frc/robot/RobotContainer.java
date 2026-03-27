@@ -113,8 +113,8 @@ public class RobotContainer {
 
   //***** SHOOTER COMMANDS: SLOW SHOOTING, FAST SHOOTING, BUTTON FOR INDEXER*****/    
     //Shoot to alliance zone
-    new JoystickButton(m_manipulatorController, Button.kRightBumper.value) // Slow hub shoot
-      .whileTrue(new ShootFuel2(m_shoot, 10.5, 0.75));
+    new JoystickButton(m_manipulatorController, Button.kRightBumper.value) // Slow hub shoot (original speed 0.75)
+      .whileTrue(new ShootFuel2(m_shoot, 10.5, 0.65));
     
     // Feeder shoot
     // new JoystickButton(m_manipulatorController, Button.kLeftBumper.value) // Feeder shoot (passing fuel. ask kaylee if needed more power for specific things)

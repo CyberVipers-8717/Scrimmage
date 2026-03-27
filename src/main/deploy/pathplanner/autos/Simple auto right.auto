@@ -5,15 +5,21 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Back up from right hub"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Shoot Fuel"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Back up from right hub"
           }
         }
       ]
