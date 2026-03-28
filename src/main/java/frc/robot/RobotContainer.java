@@ -8,6 +8,7 @@ import frc.robot.Constants.OIConstants;
 //import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.RunClimb;
+import frc.robot.commands.RunHopper;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeLift;
 import frc.robot.commands.ShootFuel;
@@ -137,11 +138,10 @@ public class RobotContainer {
     //Separate button for indexer
     // new JoystickButton(m_manipulatorController, Button.kX.value)
     //   .whileTrue(new RunCommand(
-    //       () -> m_shoot.setHopperPower(3),
-    //       m_shoot));
+    //       () -> m_shoot.setHopperPower(3),));
 
-    new JoystickButton(m_manipulatorController, Button.kX.value)
-      .whileTrue(new RunCommand( () -> m_shoot.setHopperRPM(100)));
+    new JoystickButton(m_manipulatorController, Button.kLeftBumper.value)
+      .whileTrue(new RunHopper(m_shoot, 0.1));
 
 
     //**** INTAKE COMMANDS: RUN INTAKE, RUN INTAKE LIFT ****/
