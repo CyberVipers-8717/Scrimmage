@@ -37,8 +37,8 @@ public class ShooterSubsystem extends SubsystemBase{
 
     //PID variables for shooter & queuer
     //Starting values for now, change to meet needs
-    private static final double shooter_kP = 0.2;
-    private static final double shooter_kI = 0;
+    private static final double shooter_kP = 0.003;
+    private static final double shooter_kI = 0.00000125;
     private static final double shooter_kD = 0;
     
     private static final double queuer_kP = 0.2;
@@ -77,7 +77,7 @@ public class ShooterSubsystem extends SubsystemBase{
 
         //Set up configurations, starting with idle mode and current limit
         shooterConfig.idleMode(IdleMode.kCoast);
-        shooterConfig.smartCurrentLimit(60);
+        shooterConfig.smartCurrentLimit(75);
         //Now set up closed loop control configus
         shooterConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -125,7 +125,8 @@ public class ShooterSubsystem extends SubsystemBase{
 
     // Set shooter to specific voltage
     public void setShooterVoltage(double voltage) {
-        shooterController.setSetpoint(voltage, SparkMax.ControlType.kVoltage);
+        m_shooter.setVoltage(voltage);
+        //shooterController.setSetpoint(voltage, SparkMax.ControlType.kVoltage);
     }
 
     // Set shooter to specific speed
@@ -216,10 +217,10 @@ public class ShooterSubsystem extends SubsystemBase{
     public void periodic(){
         SmartDashboard.putNumber("Shooter RPM: ", getShooterRPM());
         SmartDashboard.putNumber("Queuer RPM: ", getQueuerRPM());
-        SmartDashboard.putNumber("Hopper RPM: ", getHopperRPM());
+        //SmartDashboard.putNumber("Hopper RPM: ", getHopperRPM());
         SmartDashboard.putNumber("Shooter Current (A): ", getShooterCurrent());
         SmartDashboard.putNumber("Queuer Current (A): ", getQueuerCurrent());
-        SmartDashboard.putNumber("Hopper Current (A): ", getHopperCurrent());
+        //SmartDashboard.putNumber("Hopper Current (A): ", getHopperCurrent());
     }    
 
 }

@@ -9,17 +9,19 @@ public class ShootFuel2 extends Command {
     //Create an instance of the specific subsystem class you want to create the command for
     private final ShooterSubsystem launcher;
     // Variable to represent the voltage
-    private final double voltage;
+    private final double voltage1;
+    private final double voltage2;
     //variable to represent the speed
-    private final double speed;
+    //private final double speed;
     //Timer class object to use a timer to track seconds elapsed 
     private final Timer timer = new Timer();
 
     //Constructor for command
-    public ShootFuel2(ShooterSubsystem launcher, double voltage, double speed){
+    public ShootFuel2(ShooterSubsystem launcher, double voltage1, double voltage2 /*, double speed*/){
         this.launcher = launcher;
-        this.speed = speed;
-        this.voltage = voltage;
+        //this.speed = speed;
+        this.voltage1 = voltage1;
+        this.voltage2 = voltage2;
         addRequirements(launcher);
     }
 
@@ -28,7 +30,7 @@ public class ShootFuel2 extends Command {
     //Outputs a message to let us know the command has been called and initialized
     @Override
     public void initialize(){
-        launcher.setShooterSpeed(speed);
+        launcher.setShooterVoltage(voltage1);
         timer.start();
         System.out.println("***Shooter has started!***");
     }
@@ -41,8 +43,8 @@ public class ShootFuel2 extends Command {
         //Could also use:
         //if(timer.get() > 1){}
         if(timer.hasElapsed(1)){
-            launcher.setQueuerPower(voltage);
-            launcher.setShooterSpeed(speed);
+            launcher.setQueuerPower(voltage2);
+            launcher.setShooterVoltage(voltage1);
             SmartDashboard.putNumber("Shooter speed: ", launcher.getShooterRPM());
             SmartDashboard.putNumber("Kicker speed: ", launcher.getQueuerRPM());
             // launcher.setHopperPower(-0.4); // sets hopper voltage slower
