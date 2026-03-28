@@ -9,28 +9,31 @@ public class ShootFuel2 extends Command {
     //Create an instance of the specific subsystem class you want to create the command for
     private final ShooterSubsystem launcher;
     // Variable to represent the voltage
-    private final double voltage1;
-    private final double voltage2;
+    private final double voltageSh;
+    private final double voltageQ;
+    private final double voltageH;
     //variable to represent the speed
     //private final double speed;
     //Timer class object to use a timer to track seconds elapsed 
     private final Timer timer = new Timer();
 
     //Constructor for command
-    public ShootFuel2(ShooterSubsystem launcher, double voltage1, double voltage2 /*, double speed*/){
+    public ShootFuel2(ShooterSubsystem launcher, double voltageSh, double voltageQ, double voltageH /*, double speed*/){
         this.launcher = launcher;
         //this.speed = speed;
-        this.voltage1 = voltage1;
-        this.voltage2 = voltage2;
+        this.voltageSh = voltageSh;
+        this.voltageQ = voltageQ;
+        this.voltageH = voltageH;
         addRequirements(launcher);
     }
+
 
     //Starts the shooter as soon as the command is called
     //Also starts a timer to be used later
     //Outputs a message to let us know the command has been called and initialized
     @Override
     public void initialize(){
-        launcher.setShooterVoltage(voltage1);
+        launcher.setShooterVoltage(voltageSh);
         timer.start();
         System.out.println("***Shooter has started!***");
     }
@@ -43,10 +46,11 @@ public class ShootFuel2 extends Command {
         //Could also use:
         //if(timer.get() > 1){}
         if(timer.hasElapsed(1)){
-            launcher.setQueuerPower(voltage2);
-            launcher.setShooterVoltage(voltage1);
-            SmartDashboard.putNumber("Shooter speed: ", launcher.getShooterRPM());
-            SmartDashboard.putNumber("Kicker speed: ", launcher.getQueuerRPM());
+            launcher.setQueuerPower(voltageQ);
+            //launcher.setHopperPower(voltageH);
+            launcher.setShooterVoltage(voltageSh);
+            //SmartDashboard.putNumber("Shooter speed: ", launcher.getShooterRPM());
+            //SmartDashboard.putNumber("Kicker speed: ", launcher.getQueuerRPM());
             // launcher.setHopperPower(-0.4); // sets hopper voltage slower
             // System.out.println("Shooter at target RPM, Queuer activated.");
             // System.out.println("Shooter is running at: " + launcher.getShooterRPM());
@@ -54,7 +58,7 @@ public class ShootFuel2 extends Command {
             // System.out.println("Queuer current (A): " + launcher.getQueuerCurrent());
         } else {
             launcher.stopQueuer();
-            // launcher.stopHopper();
+            launcher.stopHopper();
             // System.out.println("Waiting for shooter to reach target RPM.");
             // System.out.println("Current RPM: " + launcher.getShooterRPM());
         }

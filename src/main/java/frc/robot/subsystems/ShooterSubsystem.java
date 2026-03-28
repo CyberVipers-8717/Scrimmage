@@ -16,22 +16,26 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ShooterSubsystem extends SubsystemBase{
 
     //Set up motors
-    private final SparkMax m_shooter;
+    private final SparkMax m_shooterL;
+    private final SparkMax m_shooterF;
     private final SparkMax m_queuer;
     private final SparkMax m_hopper;
     
     //Set up encoders
-    private final RelativeEncoder shooterEncoder;
+    private final RelativeEncoder shooterEncoderL;
+    private final RelativeEncoder shooterEncoderF;
     private final RelativeEncoder queuerEncoder;
     private final RelativeEncoder hopperEncoder;
 
     //Set up config objects
-    private final SparkMaxConfig shooterConfig;
+    private final SparkMaxConfig shooterConfigL;
+    private final SparkMaxConfig shooterConfigF;
     private final SparkMaxConfig queuerConfig;
     private final SparkMaxConfig hopperConfig;
 
     //PID Controllers for shooter and queuer
-    private final SparkClosedLoopController shooterController;
+    private final SparkClosedLoopController shooterControllerL;
+    private final SparkClosedLoopController shooterControllerF;
     private final SparkClosedLoopController queuerController;
     private final SparkClosedLoopController hopperController;
 
@@ -55,36 +59,45 @@ public class ShooterSubsystem extends SubsystemBase{
 
     public ShooterSubsystem(){
         //Initialize motors
-        m_shooter = new SparkMax(10, MotorType.kBrushless);
+        m_shooterL = new SparkMax(10, MotorType.kBrushless);
+        m_shooterF = new SparkMax(17, MotorType.kBrushless);
         m_queuer = new SparkMax(9, MotorType.kBrushless);
         //Change device ID when hopper is finished
         m_hopper = new SparkMax(14, MotorType.kBrushless);
 
         //Initialize encoders
-        shooterEncoder = m_shooter.getEncoder();
+        shooterEncoderL = m_shooterL.getEncoder();
+        shooterEncoderF = m_shooterF.getEncoder();
         queuerEncoder = m_queuer.getEncoder();
         hopperEncoder = m_hopper.getEncoder();
 
         //Initialize PID controllers
-        shooterController = m_shooter.getClosedLoopController();
+        shooterControllerL = m_shooterL.getClosedLoopController();
+        shooterControllerF = m_shooterF.getClosedLoopController();
         queuerController = m_queuer.getClosedLoopController();
         hopperController = m_hopper.getClosedLoopController();
 
         //Initialize configurations
-        shooterConfig = new SparkMaxConfig();
+        shooterConfigL = new SparkMaxConfig();
+        shooterConfigF = new SparkMaxConfig();
         queuerConfig = new SparkMaxConfig();
         hopperConfig = new SparkMaxConfig();
 
         //Set up configurations, starting with idle mode and current limit
-        shooterConfig.idleMode(IdleMode.kCoast);
-        shooterConfig.smartCurrentLimit(75);
+        shooterConfigL.idleMode(IdleMode.kCoast);
+        shooterConfigL.smartCurrentLimit(75);
         //Now set up closed loop control configus
-        shooterConfig.closedLoop
+        shooterConfigL.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(shooter_kP, shooter_kI, shooter_kD)
             .velocityFF(FF)
             .outputRange(-1, 1);
         
+        shooterConfigF.idleMode(IdleMode.kCoast);
+        shooterConfigF.smartCurrentLimit(75);
+        shooterConfigF.follow(10);
+
+
         //Do the same for the queuer config
         queuerConfig.idleMode(IdleMode.kCoast);
         queuerConfig.smartCurrentLimit(60);
@@ -106,8 +119,11 @@ public class ShooterSubsystem extends SubsystemBase{
             .outputRange(-1, 1);
 
         //Apply the configurations to motors and set inverted to true if needed
-        shooterConfig.inverted(true);
-        m_shooter.configure(shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        shooterConfigL.inverted(true);
+        m_shooterL.configure(shooterConfigL, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        shooterConfigF.inverted(false); //Its opposite to leader motor because of the gearbox
+        m_shooterF.configure(shooterConfigF, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         queuerConfig.inverted(true);
         m_queuer.configure(queuerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -118,20 +134,21 @@ public class ShooterSubsystem extends SubsystemBase{
 
     //Once constructor finished, create helpful methods for simple commands or to return specific values
 
+    //Follower shooter motor(F) always follows Leader(L) Only change leader
     // //Set Shooter to specific RPM
     public void setShooterRPM(double rpm){
-        shooterController.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
+        shooterControllerL.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
     }
 
     // Set shooter to specific voltage
     public void setShooterVoltage(double voltage) {
-        m_shooter.setVoltage(voltage);
+        m_shooterL.setVoltage(voltage);
         //shooterController.setSetpoint(voltage, SparkMax.ControlType.kVoltage);
     }
 
     // Set shooter to specific speed
     public void setShooterSpeed(double speed) {
-        m_shooter.set(speed);
+        m_shooterL.set(speed);
     }
 
     // Method to set the shooter motor speed based on percentage of speed, not rpm
@@ -144,12 +161,12 @@ public class ShooterSubsystem extends SubsystemBase{
     
     //Return the current RPM of the shooter
     public double getShooterRPM(){
-        return shooterEncoder.getVelocity();
+        return shooterEncoderL.getVelocity();
     }
 
     //Return the current draw of the shooter motor
     public double getShooterCurrent(){
-        return m_shooter.getOutputCurrent();
+        return m_shooterL.getOutputCurrent();
     }
 
     //Set queuer to specific RPM
@@ -190,6 +207,9 @@ public class ShooterSubsystem extends SubsystemBase{
         m_hopper.set(speed);
     }
 
+    public void setHopperRPM(double rpm){
+        hopperController.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
+    }
     //return curremt rpm of hopper
     public double getHopperRPM(){
         return hopperEncoder.getVelocity();
@@ -208,7 +228,8 @@ public class ShooterSubsystem extends SubsystemBase{
 
     //Stop all motors
     public void stop(){
-        m_shooter.stopMotor();
+        m_shooterL.stopMotor();
+        m_shooterF.stopMotor();
         m_queuer.stopMotor();
         m_hopper.stopMotor();
     }
