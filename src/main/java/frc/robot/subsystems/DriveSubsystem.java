@@ -3,21 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 
-/*
- * 
- * 
- * 
- * 
- * MAKE SURE TO CHANGE CAN IDS IN THE CONSTANTS FILE.
- * ALSO MAKE SURE TO GIVE THE PIGEON A CAN ID THROUGH PHOENIX TUNER
- * ALSO MAKE SURE TO INITIALIZE AUTO BUILDER IN DRIVE SUBSYSTEM 
- * IF YOU WANT TO USE PATHPLANNER.
- * 
- * 
- * 
- * 
- */
-
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -40,6 +25,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Limelight.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -66,26 +52,16 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset);
 
-  // The gyro sensor
-  //CHANGE CAN ID LATER
-  private final Pigeon2 Gyro = new Pigeon2( 16);
+      //Gyro 
+  private final Pigeon2 m_gyro = new Pigeon2( 16);
 
-  // Odometry class for tracking robot pose
-  SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
-      DriveConstants.kDriveKinematics,
-      Rotation2d.fromDegrees(Gyro.getYaw().getValueAsDouble()),
-      new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_rearLeft.getPosition(),
-          m_rearRight.getPosition()
-      });
+    //Field widget for SmartDashboard
+  public final Field2d m_field = new Field2d();
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    Gyro.reset();
-    // Usage reporting for MAXSwerve template
-    //HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
+    m_gyro.reset();
+    
 
     RobotConfig config = null;
     try{
@@ -124,34 +100,28 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // // Update the odometry in the periodic block
-    m_odometry.update(
-        Rotation2d.fromDegrees(Gyro.getYaw().getValueAsDouble()),
+    updateOdometry();
+  }
+
+  private final SwerveDrivePoseEstimator m_poseEstimator =
+    new SwerveDrivePoseEstimator(
+        DriveConstants.kDriveKinematics,
+        m_gyro.getRotation2d(),
         new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-        });
-    }
-    private final SwerveDrivePoseEstimator m_poseEstimator =
-      new SwerveDrivePoseEstimator(
-          DriveConstants.kDriveKinematics,
-          Gyro.getRotation2d(),
-          new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-          },
-          new Pose2d(),
-          VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
-          VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
+        },
+        new Pose2d(),
+        VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+        VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30))
+    );
 
 
   public void updateOdometry(){
         m_poseEstimator.update(
-        Gyro.getRotation2d(),
+        m_gyro.getRotation2d(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -194,7 +164,7 @@ public class DriveSubsystem extends SubsystemBase {
     {
       LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
       LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-      if(Math.abs(Gyro.getAngularVelocityZWorld().getValueAsDouble()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+      if(Math.abs(m_gyro.getAngularVelocityZWorld().getValueAsDouble()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
       {
         doRejectUpdate = true;
       }
@@ -220,7 +190,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The pose.
    */
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    return m_poseEstimator.getEstimatedPosition();
   }
 
   /**
@@ -229,8 +199,8 @@ public class DriveSubsystem extends SubsystemBase {
    * @param pose The pose to which to set the odometry.
    */
   public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(
-        Rotation2d.fromDegrees(Gyro.getYaw().getValueAsDouble()),
+    m_poseEstimator.resetPosition(
+        Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -258,7 +228,7 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                Rotation2d.fromDegrees(Gyro.getYaw().getValueAsDouble()))
+                Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -302,7 +272,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
-    Gyro.reset();
+    m_gyro.reset();
   }
 
   /**
@@ -311,7 +281,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Rotation2d.fromDegrees(Gyro.getYaw().getValueAsDouble()).getDegrees();
+    return Rotation2d.fromDegrees(m_gyro.getYaw().getValueAsDouble()).getDegrees();
   }
 
   /**
@@ -320,7 +290,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The turn rate of the robot, in degrees per second
    */
   public double getTurnRate() {
-    return Gyro.getAngularVelocityZWorld().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    return m_gyro.getAngularVelocityZWorld().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
     public ChassisSpeeds getRobotRelativeSpeeds(){
