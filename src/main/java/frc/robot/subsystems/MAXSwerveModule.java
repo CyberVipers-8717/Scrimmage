@@ -19,8 +19,10 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 
 import frc.robot.Configs;
+import frc.robot.Utils.TrapezoidalVelocityControl;
 
 public class MAXSwerveModule {
+  private final TrapezoidalVelocityControl m_TrapVelocity;
   private final SparkMax m_drivingSpark;
   private final SparkFlex m_turningSpark;
 
@@ -49,6 +51,8 @@ public class MAXSwerveModule {
     m_drivingClosedLoopController = m_drivingSpark.getClosedLoopController();
     m_turningClosedLoopController = m_turningSpark.getClosedLoopController();
 
+    m_TrapVelocity = new TrapezoidalVelocityControl(10, 10);
+    
     // Apply the respective configurations to the SPARKS. Reset parameters before
     // applying the configuration to bring the SPARK to a known good state. Persist
     // the settings to the SPARK to avoid losing them on a power cycle.
@@ -102,7 +106,7 @@ public class MAXSwerveModule {
     correctedDesiredState.optimize(new Rotation2d(m_turningEncoder.getPosition()));
 
     // Command driving and turning SPARKS towards their respective setpoints.
-    m_drivingClosedLoopController.setSetpoint(correctedDesiredState.speedMetersPerSecond, ControlType.kVelocity);
+    m_drivingClosedLoopController.setSetpoint(m_TrapVelocity.getSetpoint(correctedDesiredState.speedMetersPerSecond, m_drivingEncoder.getVelocity()), ControlType.kVelocity);
     m_turningClosedLoopController.setSetpoint(correctedDesiredState.angle.getRadians(), ControlType.kPosition);
 
     m_desiredState = desiredState;
