@@ -38,7 +38,7 @@ public class RunClimb extends Command {
     public boolean isFinished() {
         if (speed > 0 && m_climb.getClimbPosition() >= -1 ) { //going down and hit bottom
             return true;     
-        } else if (speed < 0 && m_climb.getClimbPosition() <= -92) { //going up and hit top
+        } else if (speed < 0 && m_climb.getClimbPosition() <= -101) { //going up and hit top
             return true; 
         } else {
             return false; 
