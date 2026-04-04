@@ -118,7 +118,7 @@ public class RobotContainer {
   //***** SHOOTER COMMANDS: SLOW SHOOTING, FAST SHOOTING, BUTTON FOR INDEXER*****/    
     //Shoot to alliance zone
     new JoystickButton(m_manipulatorController, Button.kRightBumper.value) // Slow hub shoot (original speed 0.75)
-    .whileTrue(new ShootFuel2(m_shoot, 0.8717, 8.717, 3));  
+    .whileTrue(new ShootFuel2(m_shoot, 8.717, 8.717, -0.5));  
     //.whileTrue(new ShootFuel2(m_shoot, 10.5, 3500));
     
     // Feeder shoot
@@ -127,7 +127,7 @@ public class RobotContainer {
     
     //Fast shoot
     Trigger manipulatorRightTrigger = new AnalogTrigger(m_manipulatorController, 3, 0.5);
-    manipulatorRightTrigger.whileTrue(new ShootFuel2(m_shoot, 10.08717, 4, 3));
+    manipulatorRightTrigger.whileTrue(new ShootFuel2(m_shoot, 10.8717, 8.717, -0.3));
     //manipulatorRightTrigger.whileTrue(new ShootFuel2(m_shoot, 11.9, 4000));
 
     //Reverse stuck shooter
@@ -141,7 +141,7 @@ public class RobotContainer {
     //       () -> m_shoot.setHopperPower(3),));
 
     new JoystickButton(m_manipulatorController, Button.kLeftBumper.value)
-      .whileTrue(new RunHopper(m_shoot, 0.1));
+      .whileTrue(new RunHopper(m_shoot, -0.1));
 
 
     //**** INTAKE COMMANDS: RUN INTAKE, RUN INTAKE LIFT ****/

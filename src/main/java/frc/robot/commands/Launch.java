@@ -15,7 +15,7 @@ public class Launch extends Command {
 
     @Override
     public void initialize() {
-        launcher.setQueuerPower(speed);
+        launcher.setQueuerVoltage(speed);
         launcher.setShooterRPM(speed);
     }
 

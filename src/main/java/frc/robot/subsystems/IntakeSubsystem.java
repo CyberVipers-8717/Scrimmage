@@ -117,6 +117,10 @@ public class IntakeSubsystem extends SubsystemBase{
         return m_intake.getOutputCurrent();
     }
 
+    public void stopLift(){
+        m_intake.stopMotor();
+    }
+
     public double getLiftPosition() {
         return lift1Encoder.getPosition();
     }

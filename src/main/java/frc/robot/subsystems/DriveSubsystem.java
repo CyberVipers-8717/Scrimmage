@@ -125,14 +125,14 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // // Update the odometry in the periodic block
-    // m_odometry.update(
-    //     Rotation2d.fromDegrees(Gyro.getYaw().getValueAsDouble()),
-    //     new SwerveModulePosition[] {
-    //         m_frontLeft.getPosition(),
-    //         m_frontRight.getPosition(),
-    //         m_rearLeft.getPosition(),
-    //         m_rearRight.getPosition()
-    //     });
+    m_odometry.update(
+        Rotation2d.fromDegrees(Gyro.getYaw().getValueAsDouble()),
+        new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
+        });
     }
     private final SwerveDrivePoseEstimator m_poseEstimator =
       new SwerveDrivePoseEstimator(

@@ -11,19 +11,20 @@ public class ShootFuel2 extends Command {
     // Variable to represent the voltage
     private final double voltageSh;
     private final double voltageQ;
-    private final double voltageH;
+    //private final double voltageH;
+    private final double speedH;
     //variable to represent the speed
     //private final double speed;
     //Timer class object to use a timer to track seconds elapsed 
     private final Timer timer = new Timer();
 
     //Constructor for command
-    public ShootFuel2(ShooterSubsystem launcher, double voltageSh, double voltageQ, double voltageH /*, double speed*/){
+    public ShootFuel2(ShooterSubsystem launcher, double voltageSh, double voltageQ, double speedH /*, double speed*/){
         this.launcher = launcher;
         //this.speed = speed;
         this.voltageSh = voltageSh;
         this.voltageQ = voltageQ;
-        this.voltageH = voltageH;
+        this.speedH = speedH;
         addRequirements(launcher);
     }
 
@@ -46,21 +47,14 @@ public class ShootFuel2 extends Command {
         //Could also use:
         //if(timer.get() > 1){}
         if(timer.hasElapsed(1)){
-            launcher.setQueuerPower(voltageQ);
-            //launcher.setHopperPower(voltageH);
             launcher.setShooterVoltage(voltageSh);
-            //SmartDashboard.putNumber("Shooter speed: ", launcher.getShooterRPM());
-            //SmartDashboard.putNumber("Kicker speed: ", launcher.getQueuerRPM());
-            // launcher.setHopperPower(-0.4); // sets hopper voltage slower
-            // System.out.println("Shooter at target RPM, Queuer activated.");
-            // System.out.println("Shooter is running at: " + launcher.getShooterRPM());
-            // System.out.println("Queuer is running at: " + launcher.getQueuerRPM());
-            // System.out.println("Queuer current (A): " + launcher.getQueuerCurrent());
+            launcher.setQueuerVoltage(voltageQ);
+            //launcher.setHopperPower(voltageH);
+            launcher.setHopperSpeed(speedH);
         } else {
             launcher.stopQueuer();
-            //launcher.stopHopper();
-            // System.out.println("Waiting for shooter to reach target RPM.");
-            // System.out.println("Current RPM: " + launcher.getShooterRPM());
+            launcher.stopHopper();
+
         }
     }
 

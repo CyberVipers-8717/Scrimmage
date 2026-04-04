@@ -15,6 +15,24 @@
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Fuel"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Down"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Fuel"
+                }
+              },
+              {
                 "type": "path",
                 "data": {
                   "pathName": "Over Right Bump"

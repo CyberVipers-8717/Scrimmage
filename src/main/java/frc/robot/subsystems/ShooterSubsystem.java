@@ -95,8 +95,8 @@ public class ShooterSubsystem extends SubsystemBase{
         
         shooterConfigF.idleMode(IdleMode.kCoast);
         shooterConfigF.smartCurrentLimit(75);
-        shooterConfigF.follow(10);
-
+        //shooterConfigF.follow(10);
+        shooterConfigF.follow(10, true);
 
         //Do the same for the queuer config
         queuerConfig.idleMode(IdleMode.kCoast);
@@ -122,7 +122,7 @@ public class ShooterSubsystem extends SubsystemBase{
         shooterConfigL.inverted(true);
         m_shooterL.configure(shooterConfigL, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        shooterConfigF.inverted(false); //Its opposite to leader motor because of the gearbox
+        //shooterConfigF.inverted(true); //Its opposite to leader motor because of the gearbox
         m_shooterF.configure(shooterConfigF, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         queuerConfig.inverted(true);
@@ -177,7 +177,7 @@ public class ShooterSubsystem extends SubsystemBase{
     //Method to set the queuer motor speed based on percentage of speed, not rpm
     //Change number inside .set() to desired percent (range from -1 to 1) and change
     //setQueuerRPM() to setQueuerPower() in appropriate commands
-    public void setQueuerPower(double voltage){
+    public void setQueuerVoltage(double voltage){
         m_queuer.setVoltage(voltage);
     }
 
@@ -199,7 +199,7 @@ public class ShooterSubsystem extends SubsystemBase{
     //Method to set the Hopper motor speed based on percentage of speed, not rpm
     //Change number inside .set() to desired percent (range from -1 to 1) and change
     //setHopperRPM() to setHopperPower() in appropriate commands
-    public void setHopperPower(double volts){
+    public void setHopperVoltage(double volts){
         m_hopper.setVoltage(volts);
     }
 
@@ -238,7 +238,7 @@ public class ShooterSubsystem extends SubsystemBase{
     public void periodic(){
         SmartDashboard.putNumber("Shooter RPM: ", getShooterRPM());
         SmartDashboard.putNumber("Queuer RPM: ", getQueuerRPM());
-        //SmartDashboard.putNumber("Hopper RPM: ", getHopperRPM());
+        SmartDashboard.putNumber("Hopper RPM: ", getHopperRPM());
         SmartDashboard.putNumber("Shooter Current (A): ", getShooterCurrent());
         SmartDashboard.putNumber("Queuer Current (A): ", getQueuerCurrent());
         //SmartDashboard.putNumber("Hopper Current (A): ", getHopperCurrent());

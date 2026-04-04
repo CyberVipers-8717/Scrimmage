@@ -26,14 +26,15 @@ public class RunIntakeLift extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        m_intake.setLiftMotor(0);
+        //m_intake.setLiftMotor(0);
+        m_intake.stopLift();
     }
 
     @Override
     public boolean isFinished() {
         if (speed < 0 && m_intake.getLiftPosition() <= 0 ) { //going down and hit bottom
             return true;     
-        } else if (speed > 0 && m_intake.getLiftPosition() >= 12.4) { //going up and hit top
+        } else if (speed > 0 && m_intake.getLiftPosition() >= 8) { //going up and hit top
             return true; 
         } else {
             return false; 
