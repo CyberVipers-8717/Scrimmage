@@ -18,7 +18,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.Utils.AnalogTrigger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -61,8 +60,10 @@ public class RobotContainer {
   public RobotContainer() {
     //NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 11, 0.75).withTimeout(5));
     NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 11, 4, 3).withTimeout(5));
+    NamedCommands.registerCommand("Intake Down", new RunIntakeLift(m_intake, 0.1).withTimeout(3));
     // Configure the trigger bindings
     configureBindings();
+
 
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
