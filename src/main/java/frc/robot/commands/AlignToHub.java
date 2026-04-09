@@ -42,7 +42,11 @@ public class AlignToHub extends Command {
 
         Translation2d currentPosition = m_drive.getPose().getTranslation();
         Translation2d hubToRobot = CenterOfHub.minus(currentPosition);
-
+        double currentDistance = hubToRobot.getNorm();
+        Translation2d radiusVector = hubToRobot.div(currentDistance);
+        Translation2d tangentVector = new Translation2d(-radiusVector.getY(), radiusVector.getX());
+        double distanceSpeed = -distanceController.calculate(currentDistance, desiredDistance);
+        //double rotationSpeed = rotationControl.calculate(m_drive.getPose().getRotation(), );
     }
 
     @Override
