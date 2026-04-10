@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.767012522361359,
-        "y": 1.3496958855098387
+        "x": 7.767013112071179,
+        "y": 1.3496958721070984
       },
       "isLocked": false,
       "linkedName": "Right side intake center"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 7.750787119856888,
-        "y": 3.4752236135957064
+        "y": 2.90125
       },
       "prevControl": {
         "x": 7.750787119856888,
-        "y": 2.631346684299185
+        "y": 2.0573730707034787
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,14 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Intake Fuel",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": 0.9701492537313426,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

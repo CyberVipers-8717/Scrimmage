@@ -26,6 +26,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Limelight.LimelightHelpers;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -62,6 +63,7 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     m_gyro.reset();
     
+    SmartDashboard.putData("Field", m_field);
 
     RobotConfig config = null;
     try{
@@ -129,6 +131,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     updateOdometry();
   
+    m_field.setRobotPose(getPose());
 
     boolean useMegaTag2 = true; //set to false to use MegaTag1
     boolean doRejectUpdate = false;

@@ -5,39 +5,46 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Trench Right"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Intake Down"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Intake Fuel"
+            "pathName": "Trench Right"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Intake Fuel Right Side Center"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Fuel"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Intake Fuel Right Side Center"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Right side from intake center to shoot"
+            "pathName": "Right Side From Intake to Shoot 2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Short Shoot Fuel"
+            "name": "Shoot Fuel"
           }
         }
       ]
