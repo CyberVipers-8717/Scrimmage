@@ -19,7 +19,7 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 
 import frc.robot.Configs;
-import frc.robot.Utils.TrapezoidalVelocityControl;
+import frc.robot.TrapezoidalVelocityControl;
 
 public class MAXSwerveModule {
   private final TrapezoidalVelocityControl m_TrapVelocity;
