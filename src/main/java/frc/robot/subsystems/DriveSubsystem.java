@@ -185,8 +185,8 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   /**
-   * Returns the currently-estimated pose of the robot.
-   *
+  // * Returns the currently-estimated pose of the robot.
+  // *
    * @return The pose.
    */
   public Pose2d getPose() {
