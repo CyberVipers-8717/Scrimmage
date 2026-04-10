@@ -21,6 +21,12 @@
           "data": {
             "name": "Shoot Fuel"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Run Indexer"
+          }
         }
       ]
     }

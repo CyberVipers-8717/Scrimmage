@@ -59,8 +59,9 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     //NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 11, 0.75).withTimeout(5));
-    NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 11, 4, 3).withTimeout(5));
+    NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 8.717, 8.717, 3).withTimeout(5));
     NamedCommands.registerCommand("Intake Down", new RunIntakeLift(m_intake, 0.1).withTimeout(3));
+    NamedCommands.registerCommand("Run Indexer", new RunHopper(m_shoot, -0.1).withTimeout(4));
     // Configure the trigger bindings
     configureBindings();
 
@@ -137,9 +138,9 @@ public class RobotContainer {
     //.whileTrue(new ShootFuel2(m_shoot, -5, -0.75));
 
     //Separate button for indexer
-    // new JoystickButton(m_manipulatorController, Button.kX.value)
+    // new JoystickButton(m_manipulatorController, Button.kLeftBumper.value)
     //   .whileTrue(new RunCommand(
-    //       () -> m_shoot.setHopperPower(3),));
+    //       () -> m_shoot.setHopperPower(3)));
 
     new JoystickButton(m_manipulatorController, Button.kLeftBumper.value)
       .whileTrue(new RunHopper(m_shoot, -0.1));
@@ -149,7 +150,7 @@ public class RobotContainer {
     //Intake through trigger
     Trigger manipulatorLeftTrigger = new AnalogTrigger(m_manipulatorController, 2, 0.5);// fast hub shoot
     manipulatorLeftTrigger.whileTrue(new RunIntake(m_intake, 0.95));
-    
+    //
     //Intake through B button
     // new JoystickButton(m_manipulatorController, Button.kB.value)
     //   .whileTrue(new RunIntake(m_intake, 1));
