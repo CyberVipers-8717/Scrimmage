@@ -16,7 +16,7 @@ public class AlignToHub extends Command {
     new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 4));
 
     private final Translation2d CenterOfHub = new Translation2d(4.625, 4.034);
-    private final double desiredDistance = 2.134;
+    private final double desiredDistance = 1.524;
     private final double ySpeed;
 
     public AlignToHub(DriveSubsystem m_drive, double ySpeed){

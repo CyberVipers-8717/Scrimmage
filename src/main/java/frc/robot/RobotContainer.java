@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AlignToHub;
 //import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.RunClimb;
@@ -82,11 +83,11 @@ public class RobotContainer {
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   //* {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   //* predicate, or via the named factories in {@link
+   //* edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
+   //* CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   //* PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
   private void configureBindings() {
@@ -167,6 +168,10 @@ public class RobotContainer {
       .onTrue(new RunIntakeLift(m_intake, -0.1));
     new JoystickButton(m_manipulatorController, Button.kA.value) // Intake Down
       .onTrue(new RunIntakeLift(m_intake, 0.1));
+
+  //New button for auto aim and range
+  new JoystickButton(m_driverController, Button.kA.value)
+  .whileTrue(new AlignToHub(m_robotDrive, 0.3));
           
   }
 
