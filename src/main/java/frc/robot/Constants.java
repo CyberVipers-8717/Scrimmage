@@ -112,4 +112,9 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
+
+  // public static final class RobotConstants{
+  //   public static final double kShooterVoltageLow = 8.717;
+  //   public static final double kShooterVoltageHigh = 10.8717;
+  // }
 }

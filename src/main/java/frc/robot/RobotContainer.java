@@ -59,9 +59,9 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     //NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 11, 0.75).withTimeout(5));
-    NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 8.717, 8.717, 3).withTimeout(5));
+    NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 8.717, 8.717, -0.1).withTimeout(5));
     NamedCommands.registerCommand("Intake Down", new RunIntakeLift(m_intake, 0.1).withTimeout(3));
-    NamedCommands.registerCommand("Run Indexer", new RunHopper(m_shoot, -0.01).withTimeout(4));
+    //NamedCommands.registerCommand("Run Indexer", new RunHopper(m_shoot, -0.01).withTimeout(4));
     NamedCommands.registerCommand("Intake Fuel", new RunIntake(m_intake, 0.95));
     // Configure the trigger bindings
     configureBindings();
