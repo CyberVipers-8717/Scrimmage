@@ -16,7 +16,7 @@ public class AlignToHub extends Command {
     new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 4));
 
     private final Translation2d CenterOfHub = new Translation2d(4.625, 4.034);
-    private final double desiredDistance = 1.524;
+    private final double desiredDistance = 1.0; //1.524m
     private final double ySpeed;
 
     public AlignToHub(DriveSubsystem m_drive, double ySpeed){
@@ -40,17 +40,29 @@ public class AlignToHub extends Command {
     @Override
     public void execute() {
 
+        //Get current position point as coordinate point 
         Translation2d currentPosition = m_drive.getPose().getTranslation();
+
         Translation2d hubToRobot = CenterOfHub.minus(currentPosition);
+        
         double currentDistance = hubToRobot.getNorm();
+        
         Translation2d radiusVector = hubToRobot.div(currentDistance);
+        
         Translation2d tangentVector = new Translation2d(-radiusVector.getY(), radiusVector.getX());
+        
         double distanceSpeed = -distanceController.calculate(currentDistance, desiredDistance);
+        
         double desiredAngle = CenterOfHub.minus(currentPosition).getAngle().getRadians();
+        
         double rotationSpeed = rotationControl.calculate(m_drive.getPose().getRotation().getRadians(), desiredAngle);
+        
         Translation2d radialSpeed = radiusVector.times(distanceSpeed);
-        Translation2d tangentSpeed = radiusVector.times(ySpeed);
+        
+        Translation2d tangentSpeed = tangentVector.times(ySpeed);
+        
         Translation2d robotVector = radialSpeed.plus(tangentSpeed);
+        
         m_drive.drive(robotVector.getX(), robotVector.getY(), rotationSpeed, true);
     }
 
