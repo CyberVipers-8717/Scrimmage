@@ -5,27 +5,40 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "trench Path left"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Intake Down"
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "Intake Fuel"
+            "waitTime": 3.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "intake fuel left side center"
+            "pathName": "trench Path left"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "intake fuel left side center"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Fuel"
+                }
+              }
+            ]
           }
         },
         {

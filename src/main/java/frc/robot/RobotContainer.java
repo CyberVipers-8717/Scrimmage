@@ -149,7 +149,7 @@ public class RobotContainer {
 
     //**** INTAKE COMMANDS: RUN INTAKE, RUN INTAKE LIFT ****/
     //Intake through trigger
-    Trigger manipulatorLeftTrigger = new AnalogTrigger(m_manipulatorController, 2, 0.5);// fast hub shoot
+    Trigger manipulatorLeftTrigger = new AnalogTrigger(m_manipulatorController, 2, 0.5);
     manipulatorLeftTrigger.whileTrue(new RunIntake(m_intake, 0.95));
     //
     //Intake through B button
