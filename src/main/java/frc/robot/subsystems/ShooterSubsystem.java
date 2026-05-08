@@ -59,10 +59,11 @@ public class ShooterSubsystem extends SubsystemBase{
 
     public ShooterSubsystem(){
         //Initialize motors
+        //Leader Motor
         m_shooterL = new SparkMax(10, MotorType.kBrushless);
+        //Follower Motor
         m_shooterF = new SparkMax(17, MotorType.kBrushless);
         m_queuer = new SparkMax(9, MotorType.kBrushless);
-        //Change device ID when hopper is finished
         m_hopper = new SparkMax(14, MotorType.kBrushless);
 
         //Initialize encoders
@@ -92,10 +93,12 @@ public class ShooterSubsystem extends SubsystemBase{
             .pid(shooter_kP, shooter_kI, shooter_kD)
             .velocityFF(FF)
             .outputRange(-1, 1);
-        
+
+        shooterConfigL.inverted(true); 
+
         shooterConfigF.idleMode(IdleMode.kCoast);
         shooterConfigF.smartCurrentLimit(75);
-        //shooterConfigF.follow(10);
+        //Follow motor follows lead motor with CanId as inverted version
         shooterConfigF.follow(10, true);
 
         //Do the same for the queuer config
@@ -119,10 +122,10 @@ public class ShooterSubsystem extends SubsystemBase{
             .outputRange(-1, 1);
 
         //Apply the configurations to motors and set inverted to true if needed
-        shooterConfigL.inverted(true);
+      
         m_shooterL.configure(shooterConfigL, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        //shooterConfigF.inverted(true); //Its opposite to leader motor because of the gearbox
+        //Its opposite to leader motor because of the gearbox
         m_shooterF.configure(shooterConfigF, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         queuerConfig.inverted(true);
@@ -135,7 +138,7 @@ public class ShooterSubsystem extends SubsystemBase{
     //Once constructor finished, create helpful methods for simple commands or to return specific values
 
     //Follower shooter motor(F) always follows Leader(L) Only change leader
-    // //Set Shooter to specific RPM
+    //Set Shooter to specific RPM
     public void setShooterRPM(double rpm){
         shooterControllerL.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
     }
@@ -143,21 +146,12 @@ public class ShooterSubsystem extends SubsystemBase{
     // Set shooter to specific voltage
     public void setShooterVoltage(double voltage) {
         m_shooterL.setVoltage(voltage);
-        //shooterController.setSetpoint(voltage, SparkMax.ControlType.kVoltage);
     }
 
     // Set shooter to specific speed
     public void setShooterSpeed(double speed) {
         m_shooterL.set(speed);
     }
-
-    // Method to set the shooter motor speed based on percentage of speed, not rpm
-    // Change number inside .set() to desired percent (range from -1 to 1) and change
-    // setShooterRPM() to setShooterPower() in appropriate commands
-    // public void setShooterPower(double rpm){
-    //     m_shooter.setVoltage(rpm);
-    //     //shooterController.setSetpoint(rpm, SparkMax.ControlType.kVoltage);
-    // }
     
     //Return the current RPM of the shooter
     public double getShooterRPM(){
@@ -170,13 +164,11 @@ public class ShooterSubsystem extends SubsystemBase{
     }
 
     //Set queuer to specific RPM
-    // public void setQueuerRPM(double rpm){
-    //     queuerController.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
-    // }
+    public void setQueuerRPM(double rpm){
+        queuerController.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
+    }
 
-    //Method to set the queuer motor speed based on percentage of speed, not rpm
-    //Change number inside .set() to desired percent (range from -1 to 1) and change
-    //setQueuerRPM() to setQueuerPower() in appropriate commands
+    //Set queuer speed based on voltage
     public void setQueuerVoltage(double voltage){
         m_queuer.setVoltage(voltage);
     }
@@ -196,21 +188,19 @@ public class ShooterSubsystem extends SubsystemBase{
         m_queuer.stopMotor();
     }
 
-    //Method to set the Hopper motor speed based on percentage of speed, not rpm
-    //Change number inside .set() to desired percent (range from -1 to 1) and change
-    //setHopperRPM() to setHopperPower() in appropriate commands
+    //Set hopper speed based on voltage
     public void setHopperVoltage(double volts){
         m_hopper.setVoltage(volts);
     }
-
+    // Set hopper to specific speed from a range of -1 to 1
     public void setHopperSpeed(double speed) {
         m_hopper.set(speed);
     }
-
+    // Set hopper RPM
     public void setHopperRPM(double rpm){
         hopperController.setSetpoint(rpm, SparkMax.ControlType.kVelocity);
     }
-    //return curremt rpm of hopper
+    //return current rpm of hopper
     public double getHopperRPM(){
         return hopperEncoder.getVelocity();
     }
@@ -239,9 +229,6 @@ public class ShooterSubsystem extends SubsystemBase{
         SmartDashboard.putNumber("Shooter RPM: ", getShooterRPM());
         SmartDashboard.putNumber("Queuer RPM: ", getQueuerRPM());
         SmartDashboard.putNumber("Hopper RPM: ", getHopperRPM());
-        SmartDashboard.putNumber("Shooter Current (A): ", getShooterCurrent());
-        SmartDashboard.putNumber("Queuer Current (A): ", getQueuerCurrent());
-        //SmartDashboard.putNumber("Hopper Current (A): ", getHopperCurrent());
     }    
 
 }

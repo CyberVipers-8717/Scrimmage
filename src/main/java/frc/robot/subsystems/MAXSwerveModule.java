@@ -22,6 +22,7 @@ import frc.robot.Configs;
 import frc.robot.TrapezoidalVelocityControl;
 
 public class MAXSwerveModule {
+  //Helpful for motion smoothing of drive motors
   private final TrapezoidalVelocityControl m_TrapVelocity;
   private final SparkMax m_drivingSpark;
   private final SparkFlex m_turningSpark;

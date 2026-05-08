@@ -51,9 +51,8 @@ public class IntakeSubsystem extends SubsystemBase{
 
     public IntakeSubsystem(){
 
-         //Initialize motors (need to change random ids)
+         //Initialize motors
         m_lift1 = new SparkMax(15, MotorType.kBrushless);
-        //m_lift2 = new SparkMax(2, MotorType.kBrushless);
         m_intake = new SparkMax(12, MotorType.kBrushless);
 
 
@@ -76,13 +75,13 @@ public class IntakeSubsystem extends SubsystemBase{
         //Set up configurations, starting with idle mode and current limit
         lift1Config.idleMode(IdleMode.kBrake);
         lift1Config.smartCurrentLimit(60);
+
         //Now set up closed loop control configs
         lift1Config.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(lift1_kP, lift1_kI, lift1_kD)
             .outputRange(-0.05, 0.05);
-        
-
+    
         //Same for the intake config
         intakeConfig.idleMode(IdleMode.kCoast);
         intakeConfig.smartCurrentLimit(40);
@@ -90,13 +89,11 @@ public class IntakeSubsystem extends SubsystemBase{
         intakeConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             .pid(intake_kP, intake_kI, intake_kD)
-            //.velocityFF(FF)
             .outputRange(-1, 1);
         
         //Apply the configurations to motors and set inverted to true if needed
         lift1Config.inverted(true);
         m_lift1.configure(lift1Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
 
         intakeConfig.inverted(true);
         m_intake.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -129,6 +126,8 @@ public class IntakeSubsystem extends SubsystemBase{
         lift1Controller.setSetpoint(pos, SparkMax.ControlType.kPosition);
     }
 
+    //When speed isn't 0 lift position is mantained with speed moving up or down or speed is set to 0 
+    //and holding is false
     public void setLiftMotor(double speed) {
         if (speed != 0) {
             if (getLiftPosition() <= 8 && speed > 0) {
@@ -140,11 +139,13 @@ public class IntakeSubsystem extends SubsystemBase{
             }
             holding = false;
         }
+        //If holding isn't true hold position gets the lift position and holding is set true
         else {
             if (!holding) {
                 holdPosition = getLiftPosition();
                 holding = true;
             }
+        //If holding is true lift holds position at setpoint
             lift1Controller.setSetpoint(holdPosition, SparkMax.ControlType.kPosition);
         }
     }

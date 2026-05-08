@@ -7,14 +7,12 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlignToHub;
 //import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
 import frc.robot.commands.RunClimb;
 import frc.robot.commands.RunHopper;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeLift;
-import frc.robot.commands.ShootFuel;
 import frc.robot.commands.ShootFuel2;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.commands.ShootSequence.ShootFuel;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -43,24 +41,24 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ShooterSubsystem m_shoot = new ShooterSubsystem();
   private final ClimbSubsystem m_climb = new ClimbSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  //private final CommandXboxController m_driverController = new CommandXboxController(0);
+  //
   private final XboxController m_driverController = new XboxController(0);
   private final XboxController m_manipulatorController = new XboxController(1);
 
-
+  //For pathplanner
   private final SendableChooser<Command> autoChooser;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    //NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 11, 0.75).withTimeout(5));
+    
+    //Method to use commands in an auto in pathplanner
     NamedCommands.registerCommand("Shoot Fuel", new ShootFuel2(m_shoot, 11, 4, 3).withTimeout(5));
+    
     // Configure the trigger bindings
     configureBindings();
 
@@ -93,86 +91,76 @@ public class RobotContainer {
   private void configureBindings() {
 
     //***DRIVE COMMANDS: SET ROBOT WHEELS IN X POSITION ***/
+    
     //While X button is held, the wheels will be set in an X formation
+    new JoystickButton(m_driverController, Button.kX.value)
+      .whileTrue(new RunCommand(
+        () -> m_robotDrive.setX(),
+        m_robotDrive));
+    
+    //RESET HEADING (IF NEEDED)
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
       .whileTrue(new RunCommand(
-            () -> m_robotDrive.setX(),
-            m_robotDrive));
+        () -> m_robotDrive.zeroHeading(),
+        m_robotDrive));
 
-    
-    
-
-    //RESET HEADING (IF NEEDED)
-    //  new JoystickButton(m_driverController, Button.kX.value)
-    //   .whileTrue(new RunCommand(
-    //         () -> m_robotDrive.zeroHeading(),
-    //         m_robotDrive));
-  /*
-    While the Right Bumper is held, the shoot command sequence is executed.
-    The shoot command sequence first spins the shooter to the set rpm below,
-    then starts up the queuer to the same rpm (or to a fraction which can be
-    changed in the specific command to start up the queuer).
-  */
+    //Auto aim and range (NOT FULLY TESTED)
+    //new JoystickButton(m_driverController, Button.kA.value)
+    //  .whileTrue(new AlignToHub(m_robotDrive, 0.3));
  
 
-  //***** SHOOTER COMMANDS: SLOW SHOOTING, FAST SHOOTING, BUTTON FOR INDEXER*****/    
-    //Shoot to alliance zone
-    new JoystickButton(m_manipulatorController, Button.kRightBumper.value) // Slow hub shoot (original speed 0.75)
-    .whileTrue(new ShootFuel2(m_shoot, 8.717, 8.717, -0.5));  
-    //.whileTrue(new ShootFuel2(m_shoot, 10.5, 3500));
-    
-    // Feeder shoot
-    // new JoystickButton(m_manipulatorController, Button.kLeftBumper.value) // Feeder shoot (passing fuel. ask kaylee if needed more power for specific things)
-    //   .whileTrue(new ShootFuel2(m_shoot, 11.5));
+
+    //***** SHOOTER COMMANDS: SLOW SHOOTING, FAST SHOOTING, BUTTON FOR INDEXER*****/   
+
+    //Shoot to alliance zone (Slow shoot)
+    new JoystickButton(m_manipulatorController, Button.kRightBumper.value)
+      .whileTrue(new ShootFuel2(m_shoot, 8.717, 8.717, -0.5));  
     
     //Fast shoot
     Trigger manipulatorRightTrigger = new AnalogTrigger(m_manipulatorController, 3, 0.5);
     manipulatorRightTrigger.whileTrue(new ShootFuel2(m_shoot, 10.8717, 8.717, -0.3));
-    //manipulatorRightTrigger.whileTrue(new ShootFuel2(m_shoot, 11.9, 4000));
 
     //Reverse stuck shooter
     new JoystickButton(m_manipulatorController, Button.kB.value)
-    .whileTrue(new ShootFuel2(m_shoot, -5, -5, -3 ));  
-    //.whileTrue(new ShootFuel2(m_shoot, -5, -0.75));
+      .whileTrue(new ShootFuel2(m_shoot, -5, -5, -3 ));  
 
-    //Separate button for indexer
-    // new JoystickButton(m_manipulatorController, Button.kX.value)
-    //   .whileTrue(new RunCommand(
-    //       () -> m_shoot.setHopperPower(3),));
+    //Separate button for indexer (if needed)
+    //new JoystickButton(m_manipulatorController, Button.kLeftBumper.value)
+    //  .whileTrue(new RunHopper(m_shoot, -0.1));
 
-    new JoystickButton(m_manipulatorController, Button.kLeftBumper.value)
-      .whileTrue(new RunHopper(m_shoot, -0.1));
 
 
     //**** INTAKE COMMANDS: RUN INTAKE, RUN INTAKE LIFT ****/
+
+    //Setting up left trigger to be used
+    Trigger manipulatorLeftTrigger = new AnalogTrigger(m_manipulatorController, 2, 0.5);
     //Intake through trigger
-    Trigger manipulatorLeftTrigger = new AnalogTrigger(m_manipulatorController, 2, 0.5);// fast hub shoot
     manipulatorLeftTrigger.whileTrue(new RunIntake(m_intake, 0.95));
     
-    //Intake through B button
-    // new JoystickButton(m_manipulatorController, Button.kB.value)
-    //   .whileTrue(new RunIntake(m_intake, 1));
+    //Intake through B button (if needed)
+    //new JoystickButton(m_manipulatorController, Button.kB.value)
+    //  .whileTrue(new RunIntake(m_intake, 1));
 
-
-
-    //**** CLIMB COMMANDS: RUN CLIMB(up and down) *****/
-    //Climb
-    new Trigger(() -> m_manipulatorController.getPOV(0) == 0) //Climb up
-      .whileTrue(new RunClimb(m_climb, -0.3));
-    new Trigger(() -> m_manipulatorController.getPOV(0) == 180) //Climb Down
-      .whileTrue(new RunClimb(m_climb, 0.3));
-  
-    
-    //Intake lift
-    new JoystickButton(m_manipulatorController, Button.kY.value) // Intake up
+    //Intake lift commands
+    //Intake up
+    new JoystickButton(m_manipulatorController, Button.kY.value) 
       .onTrue(new RunIntakeLift(m_intake, -0.1));
-    new JoystickButton(m_manipulatorController, Button.kA.value) // Intake Down
+    
+      //Intake down
+    new JoystickButton(m_manipulatorController, Button.kA.value) 
       .onTrue(new RunIntakeLift(m_intake, 0.1));
+    
 
-  //New button for auto aim and range
-  new JoystickButton(m_driverController, Button.kA.value)
-  .whileTrue(new AlignToHub(m_robotDrive, 0.3));
-          
+    
+    //**** CLIMB COMMANDS: RUN CLIMB(up and down) *****/
+    
+    //Climb up
+    new Trigger(() -> m_manipulatorController.getPOV(0) == 0)
+      .whileTrue(new RunClimb(m_climb, -0.3));
+
+    //Climb down
+    new Trigger(() -> m_manipulatorController.getPOV(0) == 180)
+      .whileTrue(new RunClimb(m_climb, 0.3));         
   }
 
   /**
@@ -181,7 +169,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
+    // Runs the auto that we choose from the list in shuffleboard 
     return autoChooser.getSelected();
   }
 }

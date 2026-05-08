@@ -6,22 +6,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShootFuel2 extends Command {
+
     //Create an instance of the specific subsystem class you want to create the command for
     private final ShooterSubsystem launcher;
-    // Variable to represent the voltage
+
+    // Variable to represent the voltage of the shooter and queuer
     private final double voltageSh;
     private final double voltageQ;
-    //private final double voltageH;
+
+    // Variable to represent the speed of the hopper
     private final double speedH;
-    //variable to represent the speed
-    //private final double speed;
+
     //Timer class object to use a timer to track seconds elapsed 
     private final Timer timer = new Timer();
 
     //Constructor for command
-    public ShootFuel2(ShooterSubsystem launcher, double voltageSh, double voltageQ, double speedH /*, double speed*/){
+    public ShootFuel2(ShooterSubsystem launcher, double voltageSh, double voltageQ, double speedH){
         this.launcher = launcher;
-        //this.speed = speed;
         this.voltageSh = voltageSh;
         this.voltageQ = voltageQ;
         this.speedH = speedH;
@@ -44,12 +45,10 @@ public class ShootFuel2 extends Command {
     //Checks if a certain amount of time (1 sec for now) has elapsed, then starts the queuer
     @Override
     public void execute(){
-        //Could also use:
-        //if(timer.get() > 1){}
+
         if(timer.hasElapsed(1)){
             launcher.setShooterVoltage(voltageSh);
             launcher.setQueuerVoltage(voltageQ);
-            //launcher.setHopperPower(voltageH);
             launcher.setHopperSpeed(speedH);
         } else {
             launcher.stopQueuer();

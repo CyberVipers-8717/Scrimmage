@@ -4,7 +4,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.ExponentialProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -13,10 +12,10 @@ public class AlignToHub extends Command {
     private final DriveSubsystem m_drive;
     private final PIDController distanceController = new PIDController(1, 0, 0.1);
     private final ProfiledPIDController rotationControl = new ProfiledPIDController(1, 0, 0.1, 
-    new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 4));
+        new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 4));
 
-    private final Translation2d CenterOfHub = new Translation2d(4.625, 4.034);
-    private final double desiredDistance = 1.0; //1.524m
+    private final Translation2d CenterOfHub = new Translation2d(4.625, 4.034); //in meters
+    private final double desiredDistance = 1.0; //original: 1.524m
     private final double ySpeed;
 
     public AlignToHub(DriveSubsystem m_drive, double ySpeed){
@@ -42,27 +41,41 @@ public class AlignToHub extends Command {
 
         //Get current position point as coordinate point 
         Translation2d currentPosition = m_drive.getPose().getTranslation();
-
+        
+        //Get the vector from the hub to the robot (subtract the curent position from the hub center)
         Translation2d hubToRobot = CenterOfHub.minus(currentPosition);
         
+        //Get the scalar distance from the hub to the robot
         double currentDistance = hubToRobot.getNorm();
         
+        //Divide the hubToRobot vector by the currentDistance magnitude to get the radial unit vector
         Translation2d radiusVector = hubToRobot.div(currentDistance);
         
+        //Tangential unit vector also has magnitude of 1 and perpendicular to unit vector so, just
+        //swap the x and y coords from the radial vector
         Translation2d tangentVector = new Translation2d(-radiusVector.getY(), radiusVector.getX());
         
+        //Control how fast the robot should move back/forward when distancing itself from hub
         double distanceSpeed = -distanceController.calculate(currentDistance, desiredDistance);
         
+        //
         double desiredAngle = CenterOfHub.minus(currentPosition).getAngle().getRadians();
         
+        //
         double rotationSpeed = rotationControl.calculate(m_drive.getPose().getRotation().getRadians(), desiredAngle);
         
+        //
         Translation2d radialSpeed = radiusVector.times(distanceSpeed);
         
+
+        //
         Translation2d tangentSpeed = tangentVector.times(ySpeed);
         
+
+        //
         Translation2d robotVector = radialSpeed.plus(tangentSpeed);
         
+        //
         m_drive.drive(robotVector.getX(), robotVector.getY(), rotationSpeed, true);
     }
 

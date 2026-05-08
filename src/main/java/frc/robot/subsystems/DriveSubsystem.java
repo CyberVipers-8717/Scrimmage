@@ -61,10 +61,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+    // Reset the gyro every time you start the robot
     m_gyro.reset();
-    
+    // Puts field image on shuffleboard
     SmartDashboard.putData("Field", m_field);
-
+    // Reseting starting configurations
     RobotConfig config = null;
     try{
       config = RobotConfig.fromGUISettings();
@@ -99,7 +100,7 @@ public class DriveSubsystem extends SubsystemBase {
     );
  
   }
-
+  // Setting odometry to use megatag
   private final SwerveDrivePoseEstimator m_poseEstimator =
     new SwerveDrivePoseEstimator(
         DriveConstants.kDriveKinematics,
@@ -115,7 +116,7 @@ public class DriveSubsystem extends SubsystemBase {
         VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30))
     );
 
-
+  // Updates odometry
   public void updateOdometry(){
         m_poseEstimator.update(
         m_gyro.getRotation2d(),
@@ -130,9 +131,9 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     updateOdometry();
-  
+    // Updating robot position on the map
     m_field.setRobotPose(getPose());
-
+    // From limelight's github megatag set up
     boolean useMegaTag2 = true; //set to false to use MegaTag1
     boolean doRejectUpdate = false;
     if(useMegaTag2 == false)
@@ -299,7 +300,7 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return m_gyro.getAngularVelocityZWorld().getValueAsDouble() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
-
+  // Gets speed of the robot for pathplanner
     public ChassisSpeeds getRobotRelativeSpeeds(){
     return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
   }
